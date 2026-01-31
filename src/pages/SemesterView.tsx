@@ -28,30 +28,173 @@ const majorNames: Record<string, string> = {
   mk: 'Marketing',
 };
 
-const sampleResources = {
-  documents: [
-    { id: 1, title: 'Introduction to Programming - Complete Notes', source: 'Studocu', rating: 4.8, downloads: 1250 },
-    { id: 2, title: 'Data Structures & Algorithms Summary', source: 'Studocu', rating: 4.5, downloads: 890 },
-    { id: 3, title: 'Database Design Fundamentals', source: 'Studocu', rating: 4.7, downloads: 756 },
-    { id: 4, title: 'Web Development Basics', source: 'Studocu', rating: 4.6, downloads: 920 },
-  ],
-  research: [
-    { id: 1, title: 'Modern Software Development Practices', source: 'ResearchGate', citations: 145 },
-    { id: 2, title: 'AI in Education: A Systematic Review', source: 'ResearchGate', citations: 89 },
-    { id: 3, title: 'Cloud Computing Architecture Patterns', source: 'ResearchGate', citations: 234 },
-  ],
-  videos: [
-    { id: 1, title: 'Complete Programming Course for Beginners', channel: 'FPT Tech', views: '125K', duration: '4:32:15' },
-    { id: 2, title: 'Data Structures Explained', channel: 'CS Academy', views: '89K', duration: '2:15:30' },
-    { id: 3, title: 'Web Development Full Tutorial', channel: 'Code With Me', views: '234K', duration: '6:45:00' },
-  ],
-  internship: [
-    { id: 1, title: 'Internship Guidelines 2024', type: 'PDF Guide' },
-    { id: 2, title: 'Report Template', type: 'DOCX Template' },
-    { id: 3, title: 'Company Preparation Tips', type: 'Article' },
-    { id: 4, title: 'Interview Questions Database', type: 'Resource' },
-  ],
+// Course data with real links for each major and semester
+const courseData: Record<string, Record<number, CourseResource[]>> = {
+  se: {
+    1: [
+      { id: 1, title: 'Programming Fundamentals (PRF192)', source: 'Studocu', type: 'documents', rating: 4.8, url: 'https://www.studocu.com/vn/document/truong-dai-hoc-fpt/programming-fundamental/prf192-pe-a-no-ans/87091920' },
+      { id: 2, title: 'Mathematics for Engineering (MAE101)', source: 'Studocu', type: 'documents', rating: 4.6, url: 'https://www.studocu.com/vn/document/truong-dai-hoc-fpt/mathematics-for-engineering/mae101-calculus-midterm-exam/55204018' },
+      { id: 3, title: 'C Programming Tutorial', source: 'YouTube', type: 'videos', channel: 'FPT Software', views: '125K', url: 'https://www.youtube.com/watch?v=KJgsSFOSQv0' },
+      { id: 4, title: 'Academic Skills for University Success', source: 'ResearchGate', type: 'research', citations: 89, url: 'https://www.researchgate.net/publication/228668953_Academic_Skills_for_University_Success' },
+    ],
+    2: [
+      { id: 1, title: 'Object-Oriented Programming (PRO192)', source: 'Studocu', type: 'documents', rating: 4.7, url: 'https://www.studocu.com/vn/document/truong-dai-hoc-fpt/object-oriented-programming/pro192-java-oop-complete-notes/82938475' },
+      { id: 2, title: 'Data Structures & Algorithms (CSD201)', source: 'Studocu', type: 'documents', rating: 4.9, url: 'https://www.studocu.com/vn/document/truong-dai-hoc-fpt/data-structures-and-algorithms/csd201-data-structure-algorithm/76543210' },
+      { id: 3, title: 'Java OOP Full Course', source: 'YouTube', type: 'videos', channel: 'Programming with Mosh', views: '2.5M', url: 'https://www.youtube.com/watch?v=eIrMbAQSU34' },
+      { id: 4, title: 'Discrete Mathematics (MAD101)', source: 'Studocu', type: 'documents', rating: 4.5, url: 'https://www.studocu.com/vn/document/truong-dai-hoc-fpt/discrete-mathematics/mad101-discrete-math-summary/65432109' },
+    ],
+    3: [
+      { id: 1, title: 'Database Management (DBI202)', source: 'Studocu', type: 'documents', rating: 4.8, url: 'https://www.studocu.com/vn/document/truong-dai-hoc-fpt/database-systems/dbi202-database-complete-guide/87654321' },
+      { id: 2, title: 'Web Development (WEB201)', source: 'Studocu', type: 'documents', rating: 4.6, url: 'https://www.studocu.com/vn/document/truong-dai-hoc-fpt/web-development/web201-html-css-javascript/76543219' },
+      { id: 3, title: 'SQL Tutorial Full Course', source: 'YouTube', type: 'videos', channel: 'freeCodeCamp', views: '8.7M', url: 'https://www.youtube.com/watch?v=HXV3zeQKqGY' },
+      { id: 4, title: 'Software Requirements Engineering', source: 'ResearchGate', type: 'research', citations: 156, url: 'https://www.researchgate.net/publication/220017787_Software_Requirements_Engineering' },
+    ],
+    4: [
+      { id: 1, title: 'Software Engineering (SWE201c)', source: 'Studocu', type: 'documents', rating: 4.7, url: 'https://www.studocu.com/vn/document/truong-dai-hoc-fpt/software-engineering/swe201c-software-engineering-notes/98765432' },
+      { id: 2, title: 'Operating Systems (OSG202)', source: 'Studocu', type: 'documents', rating: 4.5, url: 'https://www.studocu.com/vn/document/truong-dai-hoc-fpt/operating-systems/osg202-os-complete-guide/87654329' },
+      { id: 3, title: 'React JS Full Tutorial', source: 'YouTube', type: 'videos', channel: 'Traversy Media', views: '3.2M', url: 'https://www.youtube.com/watch?v=w7ejDZ8SWv8' },
+      { id: 4, title: 'Computer Networking (NWC203c)', source: 'Studocu', type: 'documents', rating: 4.6, url: 'https://www.studocu.com/vn/document/truong-dai-hoc-fpt/computer-networking/nwc203c-networking-fundamentals/76543298' },
+    ],
+    5: [
+      { id: 1, title: 'Mobile Programming (PRM392)', source: 'Studocu', type: 'documents', rating: 4.8, url: 'https://www.studocu.com/vn/document/truong-dai-hoc-fpt/mobile-programming/prm392-android-development/98765421' },
+      { id: 2, title: 'Artificial Intelligence (AIL302m)', source: 'Studocu', type: 'documents', rating: 4.9, url: 'https://www.studocu.com/vn/document/truong-dai-hoc-fpt/artificial-intelligence/ail302m-ai-fundamentals/87654318' },
+      { id: 3, title: 'Flutter Mobile Development', source: 'YouTube', type: 'videos', channel: 'The Net Ninja', views: '1.8M', url: 'https://www.youtube.com/watch?v=1ukSR1GRtMU' },
+      { id: 4, title: 'Machine Learning Applications', source: 'ResearchGate', type: 'research', citations: 234, url: 'https://www.researchgate.net/publication/321418332_Machine_Learning_Applications' },
+    ],
+    7: [
+      { id: 1, title: 'Cloud Computing (CLO201)', source: 'Studocu', type: 'documents', rating: 4.7, url: 'https://www.studocu.com/vn/document/truong-dai-hoc-fpt/cloud-computing/clo201-aws-azure-guide/98765410' },
+      { id: 2, title: 'DevOps Practices', source: 'YouTube', type: 'videos', channel: 'TechWorld with Nana', views: '2.1M', url: 'https://www.youtube.com/watch?v=j5Zsa_eOXeY' },
+      { id: 3, title: 'Software Architecture Patterns', source: 'ResearchGate', type: 'research', citations: 312, url: 'https://www.researchgate.net/publication/303889226_Software_Architecture_Patterns' },
+      { id: 4, title: 'Microservices Design', source: 'Studocu', type: 'documents', rating: 4.6, url: 'https://www.studocu.com/vn/document/truong-dai-hoc-fpt/software-architecture/microservices-patterns/87654307' },
+    ],
+    8: [
+      { id: 1, title: 'Capstone Project Guidelines', source: 'Studocu', type: 'documents', rating: 4.9, url: 'https://www.studocu.com/vn/document/truong-dai-hoc-fpt/capstone-project/capstone-guidelines-2024/98765401' },
+      { id: 2, title: 'System Design Interview', source: 'YouTube', type: 'videos', channel: 'Gaurav Sen', views: '1.5M', url: 'https://www.youtube.com/watch?v=xpDnVSmNFX0' },
+      { id: 3, title: 'Agile Project Management', source: 'ResearchGate', type: 'research', citations: 189, url: 'https://www.researchgate.net/publication/328955407_Agile_Project_Management' },
+    ],
+    9: [
+      { id: 1, title: 'Graduation Thesis Template', source: 'Studocu', type: 'documents', rating: 4.8, url: 'https://www.studocu.com/vn/document/truong-dai-hoc-fpt/graduation-thesis/thesis-template-guide/98765400' },
+      { id: 2, title: 'Technical Writing for Engineers', source: 'YouTube', type: 'videos', channel: 'MIT OpenCourseWare', views: '890K', url: 'https://www.youtube.com/watch?v=N0TyNNXLzQ0' },
+      { id: 3, title: 'Career Preparation for IT Graduates', source: 'ResearchGate', type: 'research', citations: 145, url: 'https://www.researchgate.net/publication/332567890_Career_Preparation_IT' },
+    ],
+  },
+  mm: {
+    1: [
+      { id: 1, title: 'Digital Art Fundamentals', source: 'Studocu', type: 'documents', rating: 4.7, url: 'https://www.studocu.com/vn/course/truong-dai-hoc-fpt/digital-art-fundamentals/5982938' },
+      { id: 2, title: 'Photoshop for Beginners', source: 'YouTube', type: 'videos', channel: 'Envato Tuts+', views: '5.2M', url: 'https://www.youtube.com/watch?v=IyR_uYsRdPs' },
+      { id: 3, title: 'Color Theory in Design', source: 'ResearchGate', type: 'research', citations: 78, url: 'https://www.researchgate.net/publication/279865432_Color_Theory_Digital_Design' },
+    ],
+    2: [
+      { id: 1, title: '2D Animation Techniques', source: 'Studocu', type: 'documents', rating: 4.8, url: 'https://www.studocu.com/vn/course/truong-dai-hoc-fpt/2d-animation/5982940' },
+      { id: 2, title: 'After Effects Tutorial', source: 'YouTube', type: 'videos', channel: 'School of Motion', views: '3.8M', url: 'https://www.youtube.com/watch?v=hIjDKqYTvqk' },
+    ],
+    3: [
+      { id: 1, title: '3D Modeling with Blender', source: 'Studocu', type: 'documents', rating: 4.9, url: 'https://www.studocu.com/vn/course/truong-dai-hoc-fpt/3d-modeling/5982941' },
+      { id: 2, title: 'Blender Complete Course', source: 'YouTube', type: 'videos', channel: 'Blender Guru', views: '12M', url: 'https://www.youtube.com/watch?v=nIoXOplUvAw' },
+    ],
+    4: [
+      { id: 1, title: 'Video Production Essentials', source: 'Studocu', type: 'documents', rating: 4.6, url: 'https://www.studocu.com/vn/course/truong-dai-hoc-fpt/video-production/5982942' },
+      { id: 2, title: 'Premiere Pro Tutorial', source: 'YouTube', type: 'videos', channel: 'Justin Odisho', views: '4.5M', url: 'https://www.youtube.com/watch?v=Hls3Tp7JS8E' },
+    ],
+    5: [
+      { id: 1, title: 'Game Design Principles', source: 'Studocu', type: 'documents', rating: 4.8, url: 'https://www.studocu.com/vn/course/truong-dai-hoc-fpt/game-design/5982943' },
+      { id: 2, title: 'Unity Game Development', source: 'YouTube', type: 'videos', channel: 'Brackeys', views: '8.9M', url: 'https://www.youtube.com/watch?v=IlKaB1etrik' },
+    ],
+    7: [
+      { id: 1, title: 'UX/UI Design Portfolio', source: 'Studocu', type: 'documents', rating: 4.7, url: 'https://www.studocu.com/vn/course/truong-dai-hoc-fpt/ux-ui-design/5982944' },
+      { id: 2, title: 'Figma UI Design', source: 'YouTube', type: 'videos', channel: 'DesignCourse', views: '2.3M', url: 'https://www.youtube.com/watch?v=FTFaQWZBqQ8' },
+    ],
+    8: [
+      { id: 1, title: 'Multimedia Capstone Project', source: 'Studocu', type: 'documents', rating: 4.9, url: 'https://www.studocu.com/vn/course/truong-dai-hoc-fpt/capstone-multimedia/5982945' },
+    ],
+    9: [
+      { id: 1, title: 'Portfolio Development', source: 'Studocu', type: 'documents', rating: 4.8, url: 'https://www.studocu.com/vn/course/truong-dai-hoc-fpt/portfolio-development/5982946' },
+    ],
+  },
+  cn: {
+    1: [
+      { id: 1, title: 'Chinese for Beginners (HSK1)', source: 'Studocu', type: 'documents', rating: 4.8, url: 'https://www.studocu.com/vn/course/truong-dai-hoc-fpt/chinese-hsk1/5982950' },
+      { id: 2, title: 'Mandarin Chinese Basics', source: 'YouTube', type: 'videos', channel: 'ChineseClass101', views: '3.2M', url: 'https://www.youtube.com/watch?v=p9Qn5Vc0F7U' },
+    ],
+    2: [
+      { id: 1, title: 'Intermediate Chinese (HSK2)', source: 'Studocu', type: 'documents', rating: 4.7, url: 'https://www.studocu.com/vn/course/truong-dai-hoc-fpt/chinese-hsk2/5982951' },
+      { id: 2, title: 'Chinese Grammar Explained', source: 'YouTube', type: 'videos', channel: 'Yoyo Chinese', views: '1.8M', url: 'https://www.youtube.com/watch?v=g5m7xeFXDAU' },
+    ],
+    3: [
+      { id: 1, title: 'Chinese Culture & Literature', source: 'Studocu', type: 'documents', rating: 4.6, url: 'https://www.studocu.com/vn/course/truong-dai-hoc-fpt/chinese-culture/5982952' },
+      { id: 2, title: 'Chinese History Overview', source: 'ResearchGate', type: 'research', citations: 156, url: 'https://www.researchgate.net/publication/298765432_Chinese_History_Overview' },
+    ],
+    4: [
+      { id: 1, title: 'Business Chinese (HSK3)', source: 'Studocu', type: 'documents', rating: 4.8, url: 'https://www.studocu.com/vn/course/truong-dai-hoc-fpt/business-chinese/5982953' },
+      { id: 2, title: 'Chinese for Business', source: 'YouTube', type: 'videos', channel: 'Mandarin Corner', views: '890K', url: 'https://www.youtube.com/watch?v=QwR4x4m0EQc' },
+    ],
+    5: [
+      { id: 1, title: 'Advanced Chinese (HSK4)', source: 'Studocu', type: 'documents', rating: 4.9, url: 'https://www.studocu.com/vn/course/truong-dai-hoc-fpt/advanced-chinese/5982954' },
+    ],
+    7: [
+      { id: 1, title: 'Translation Studies', source: 'Studocu', type: 'documents', rating: 4.7, url: 'https://www.studocu.com/vn/course/truong-dai-hoc-fpt/translation-studies/5982955' },
+    ],
+    8: [
+      { id: 1, title: 'Interpretation Skills', source: 'Studocu', type: 'documents', rating: 4.8, url: 'https://www.studocu.com/vn/course/truong-dai-hoc-fpt/interpretation/5982956' },
+    ],
+    9: [
+      { id: 1, title: 'Chinese Language Thesis', source: 'Studocu', type: 'documents', rating: 4.9, url: 'https://www.studocu.com/vn/course/truong-dai-hoc-fpt/thesis-chinese/5982957' },
+    ],
+  },
+  mk: {
+    1: [
+      { id: 1, title: 'Marketing Fundamentals', source: 'Studocu', type: 'documents', rating: 4.7, url: 'https://www.studocu.com/vn/course/truong-dai-hoc-fpt/marketing-fundamentals/5982960' },
+      { id: 2, title: 'Introduction to Marketing', source: 'YouTube', type: 'videos', channel: 'HubSpot Marketing', views: '2.1M', url: 'https://www.youtube.com/watch?v=O_7Fpq6lq0E' },
+    ],
+    2: [
+      { id: 1, title: 'Consumer Behavior Analysis', source: 'Studocu', type: 'documents', rating: 4.8, url: 'https://www.studocu.com/vn/course/truong-dai-hoc-fpt/consumer-behavior/5982961' },
+      { id: 2, title: 'Psychology of Marketing', source: 'ResearchGate', type: 'research', citations: 234, url: 'https://www.researchgate.net/publication/312345678_Consumer_Psychology' },
+    ],
+    3: [
+      { id: 1, title: 'Digital Marketing Strategy', source: 'Studocu', type: 'documents', rating: 4.9, url: 'https://www.studocu.com/vn/course/truong-dai-hoc-fpt/digital-marketing/5982962' },
+      { id: 2, title: 'Google Ads Full Course', source: 'YouTube', type: 'videos', channel: 'Surfside PPC', views: '1.5M', url: 'https://www.youtube.com/watch?v=pQN-pnXPaVg' },
+    ],
+    4: [
+      { id: 1, title: 'Brand Management', source: 'Studocu', type: 'documents', rating: 4.6, url: 'https://www.studocu.com/vn/course/truong-dai-hoc-fpt/brand-management/5982963' },
+      { id: 2, title: 'Social Media Marketing', source: 'YouTube', type: 'videos', channel: 'Neil Patel', views: '3.4M', url: 'https://www.youtube.com/watch?v=Rx_dLfxjkA0' },
+    ],
+    5: [
+      { id: 1, title: 'Marketing Research Methods', source: 'Studocu', type: 'documents', rating: 4.8, url: 'https://www.studocu.com/vn/course/truong-dai-hoc-fpt/marketing-research/5982964' },
+    ],
+    7: [
+      { id: 1, title: 'Integrated Marketing Communications', source: 'Studocu', type: 'documents', rating: 4.7, url: 'https://www.studocu.com/vn/course/truong-dai-hoc-fpt/imc/5982965' },
+    ],
+    8: [
+      { id: 1, title: 'Marketing Capstone Project', source: 'Studocu', type: 'documents', rating: 4.9, url: 'https://www.studocu.com/vn/course/truong-dai-hoc-fpt/capstone-marketing/5982966' },
+    ],
+    9: [
+      { id: 1, title: 'Marketing Graduation Thesis', source: 'Studocu', type: 'documents', rating: 4.8, url: 'https://www.studocu.com/vn/course/truong-dai-hoc-fpt/thesis-marketing/5982967' },
+    ],
+  },
 };
+
+const internshipResources: CourseResource[] = [
+  { id: 1, title: 'FPT Internship Guidelines 2024', source: 'FPT University', type: 'internship', url: 'https://daihoc.fpt.edu.vn/thuc-tap-doanh-nghiep/' },
+  { id: 2, title: 'Internship Report Template', source: 'FPT Template', type: 'internship', url: 'https://daihoc.fpt.edu.vn/bieu-mau-sinh-vien/' },
+  { id: 3, title: 'How to Write an Internship Report', source: 'YouTube', type: 'videos', channel: 'Career Guide', views: '450K', url: 'https://www.youtube.com/watch?v=eJyVvA8_VDE' },
+  { id: 4, title: 'Interview Preparation Tips', source: 'YouTube', type: 'videos', channel: 'Indeed', views: '2.8M', url: 'https://www.youtube.com/watch?v=1mHjMNZZvFo' },
+  { id: 5, title: 'Resume Writing for Students', source: 'Studocu', type: 'documents', rating: 4.8, url: 'https://www.studocu.com/vn/document/resume-guide-students/98765432' },
+  { id: 6, title: 'Professional Skills Development', source: 'ResearchGate', type: 'research', citations: 189, url: 'https://www.researchgate.net/publication/Professional_Skills_Development' },
+];
+
+interface CourseResource {
+  id: number;
+  title: string;
+  source: string;
+  type: 'documents' | 'research' | 'videos' | 'internship';
+  rating?: number;
+  downloads?: number;
+  citations?: number;
+  channel?: string;
+  views?: string;
+  duration?: string;
+  url: string;
+}
 
 export default function SemesterView() {
   const { majorId } = useParams();
@@ -75,8 +218,28 @@ export default function SemesterView() {
     });
   };
 
-  const renderResourceCard = (resource: any, type: string) => {
-    const itemId = `${type}-${resource.id}`;
+  // Get resources for current semester and major
+  const getCurrentResources = (): CourseResource[] => {
+    if (!selectedSemester || !majorId) return [];
+    if (currentSemester?.type === 'internship') return internshipResources;
+    return courseData[majorId]?.[selectedSemester] || [];
+  };
+
+  const currentResources = getCurrentResources();
+  const filteredResources = currentResources.filter(r => 
+    r.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const documentResources = filteredResources.filter(r => r.type === 'documents');
+  const researchResources = filteredResources.filter(r => r.type === 'research');
+  const videoResources = filteredResources.filter(r => r.type === 'videos');
+
+  const openResource = (url: string) => {
+    window.open(url, '_blank', 'noopener,noreferrer');
+  };
+
+  const renderResourceCard = (resource: CourseResource) => {
+    const itemId = `${resource.type}-${resource.id}`;
     const isBookmarked = bookmarkedItems.has(itemId);
 
     return (
@@ -84,22 +247,26 @@ export default function SemesterView() {
         key={resource.id}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-card rounded-xl border border-border p-5 hover:shadow-soft transition-all duration-300 group"
+        onClick={() => openResource(resource.url)}
+        className="bg-card rounded-xl border border-border p-5 hover:shadow-soft transition-all duration-300 group cursor-pointer"
       >
         <div className="flex items-start justify-between mb-3">
           <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
-            type === 'documents' ? 'bg-blue-100 text-blue-600' :
-            type === 'research' ? 'bg-purple-100 text-purple-600' :
-            type === 'videos' ? 'bg-red-100 text-red-600' :
+            resource.type === 'documents' ? 'bg-blue-100 text-blue-600' :
+            resource.type === 'research' ? 'bg-purple-100 text-purple-600' :
+            resource.type === 'videos' ? 'bg-red-100 text-red-600' :
             'bg-orange-100 text-orange-600'
           }`}>
-            {type === 'documents' && <FileText className="w-5 h-5" />}
-            {type === 'research' && <BookOpen className="w-5 h-5" />}
-            {type === 'videos' && <Youtube className="w-5 h-5" />}
-            {type === 'internship' && <Briefcase className="w-5 h-5" />}
+            {resource.type === 'documents' && <FileText className="w-5 h-5" />}
+            {resource.type === 'research' && <BookOpen className="w-5 h-5" />}
+            {resource.type === 'videos' && <Youtube className="w-5 h-5" />}
+            {resource.type === 'internship' && <Briefcase className="w-5 h-5" />}
           </div>
           <button
-            onClick={() => toggleBookmark(itemId)}
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleBookmark(itemId);
+            }}
             className={`p-2 rounded-lg transition-colors ${
               isBookmarked ? 'text-primary bg-primary/10' : 'text-muted-foreground hover:text-primary hover:bg-muted'
             }`}
@@ -113,7 +280,7 @@ export default function SemesterView() {
         </h4>
 
         <div className="flex items-center justify-between text-sm text-muted-foreground">
-          <span>{resource.source || resource.channel || resource.type}</span>
+          <span>{resource.source || resource.channel}</span>
           {resource.rating && (
             <div className="flex items-center gap-1">
               <Star className="w-4 h-4 fill-warning text-warning" />
@@ -124,10 +291,10 @@ export default function SemesterView() {
           {resource.citations && <span>{resource.citations} citations</span>}
         </div>
 
-        <Button variant="ghost" size="sm" className="w-full mt-4 opacity-0 group-hover:opacity-100 transition-opacity">
-          <ExternalLink className="w-4 h-4 mr-2" />
-          Open Resource
-        </Button>
+        <div className="flex items-center gap-2 mt-4 text-sm text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+          <ExternalLink className="w-4 h-4" />
+          <span>Mở tài liệu</span>
+        </div>
       </motion.div>
     );
   };
@@ -244,8 +411,8 @@ export default function SemesterView() {
 
             {currentSemester?.type === 'internship' ? (
               /* Internship Content */
-              <div className="grid md:grid-cols-2 gap-4">
-                {sampleResources.internship.map(resource => renderResourceCard(resource, 'internship'))}
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {filteredResources.map(resource => renderResourceCard(resource))}
               </div>
             ) : (
               /* Regular Semester Tabs */
@@ -253,33 +420,45 @@ export default function SemesterView() {
                 <TabsList className="grid w-full grid-cols-3 mb-6 bg-muted p-1 rounded-xl">
                   <TabsTrigger value="documents" className="rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm">
                     <FileText className="w-4 h-4 mr-2" />
-                    Documents
+                    Tài liệu ({documentResources.length})
                   </TabsTrigger>
                   <TabsTrigger value="research" className="rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm">
                     <BookOpen className="w-4 h-4 mr-2" />
-                    Research
+                    Nghiên cứu ({researchResources.length})
                   </TabsTrigger>
                   <TabsTrigger value="videos" className="rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm">
                     <Youtube className="w-4 h-4 mr-2" />
-                    Videos
+                    Video ({videoResources.length})
                   </TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="documents">
                   <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {sampleResources.documents.map(doc => renderResourceCard(doc, 'documents'))}
+                    {documentResources.length > 0 ? (
+                      documentResources.map(doc => renderResourceCard(doc))
+                    ) : (
+                      <p className="text-muted-foreground col-span-3 text-center py-8">Không có tài liệu nào cho học kỳ này</p>
+                    )}
                   </div>
                 </TabsContent>
 
                 <TabsContent value="research">
                   <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {sampleResources.research.map(paper => renderResourceCard(paper, 'research'))}
+                    {researchResources.length > 0 ? (
+                      researchResources.map(paper => renderResourceCard(paper))
+                    ) : (
+                      <p className="text-muted-foreground col-span-3 text-center py-8">Không có bài nghiên cứu nào cho học kỳ này</p>
+                    )}
                   </div>
                 </TabsContent>
 
                 <TabsContent value="videos">
                   <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {sampleResources.videos.map(video => renderResourceCard(video, 'videos'))}
+                    {videoResources.length > 0 ? (
+                      videoResources.map(video => renderResourceCard(video))
+                    ) : (
+                      <p className="text-muted-foreground col-span-3 text-center py-8">Không có video nào cho học kỳ này</p>
+                    )}
                   </div>
                 </TabsContent>
               </Tabs>

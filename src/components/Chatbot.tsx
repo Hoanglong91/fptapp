@@ -1,107 +1,120 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageCircle, X, Send, Bot, User, Sparkles, Loader2 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import ReactMarkdown from 'react-markdown';
-
-interface Message {
-  id: string;
-  role: 'user' | 'assistant';
-  content: string;
-}
+import { MessageCircle, Loader2 } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import ChatHeader from './chatbot/ChatHeader';
+import ChatMessage, { Message } from './chatbot/ChatMessage';
+import ChatInput from './chatbot/ChatInput';
+import QuickReplies from './chatbot/QuickReplies';
 
 const initialMessages: Message[] = [
   {
     id: '1',
     role: 'assistant',
-    content: "👋 Hi there! I'm your FPT Learning Assistant. I can help you with:\n\n• Finding study materials\n• Understanding website features\n• Study tips and recommendations\n• GPA calculation guidance\n\nHow can I help you today?"
+    content: "👋 Xin chào! Mình là **FPT Learning Assistant** - trợ lý học tập AI của bạn.\n\nMình có thể giúp bạn:\n\n• 📚 Tìm tài liệu học tập theo ngành và kỳ\n• 📊 Hướng dẫn cải thiện GPA\n• 💼 Tips chuẩn bị thực tập\n• 🎯 Giải đáp thắc mắc về chương trình học\n\nBạn muốn hỏi gì nào?"
   }
 ];
 
 const quickReplies = [
-  "How do I improve my GPA?",
-  "Find resources for Programming",
-  "Tips for internship prep",
-  "How to use bookmarks?"
+  "Làm sao để cải thiện GPA?",
+  "Tìm tài liệu học lập trình",
+  "Chuẩn bị thực tập như thế nào?",
+  "So sánh các ngành học FPT"
 ];
 
 export default function Chatbot() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>(initialMessages);
-  const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const scrollToBottom = () => {
+  const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
+  }, []);
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+  }, [messages, scrollToBottom]);
 
-  const handleSend = async (text?: string) => {
-    const messageText = text || input;
-    if (!messageText.trim()) return;
+  const handleSend = async (text: string) => {
+    if (!text.trim()) return;
 
     const userMessage: Message = {
       id: Date.now().toString(),
       role: 'user',
-      content: messageText
+      content: text
     };
 
     setMessages(prev => [...prev, userMessage]);
-    setInput('');
     setIsLoading(true);
 
-    // Simulate AI response (in production, this would call the AI edge function)
-    setTimeout(() => {
-      const responses: Record<string, string> = {
-        'gpa': "📊 **GPA Improvement Tips:**\n\n1. **Prioritize high-credit subjects** - They impact your GPA more\n2. **Attend all classes** - Participation often counts\n3. **Start assignments early** - Avoid last-minute stress\n4. **Form study groups** - Learn from peers\n5. **Use the GPA Calculator** below to track progress!\n\nWould you like specific tips for any subject?",
-        'programming': "💻 **Programming Resources:**\n\nI found great materials for you:\n\n• **Studocu:** Complete course notes\n• **YouTube:** Video tutorials from FPT Tech\n• **ResearchGate:** Academic papers\n\nGo to Semester View → Documents tab to access these. Need help with a specific topic?",
-        'internship': "🎯 **Internship Preparation:**\n\n1. **Update your CV** - Highlight projects\n2. **Practice coding interviews** - LeetCode, HackerRank\n3. **Research companies** - Know their tech stack\n4. **Prepare questions** - Show genuine interest\n\nCheck Semester 6 for complete internship guides and templates!",
-        'bookmark': "📚 **Using Bookmarks:**\n\n1. Browse any resource in a semester\n2. Click the 🔖 bookmark icon on the card\n3. Access saved items anytime\n\nBookmarks help you build your personal study library!"
-      };
+    try {
+      // Get conversation history (excluding the initial greeting)
+      const conversationHistory = messages.slice(1).map(msg => ({
+        role: msg.role,
+        content: msg.content
+      }));
 
-      let response = "I understand you're asking about that! Here at FPT Learn, we have resources to help. Could you be more specific about what you're looking for? I can help with:\n\n• Study materials\n• GPA calculation\n• Internship prep\n• Website features";
+      const { data, error } = await supabase.functions.invoke('ai-chat', {
+        body: {
+          messages: [{ role: 'user', content: text }],
+          conversationHistory
+        }
+      });
 
-      const lowerText = messageText.toLowerCase();
-      if (lowerText.includes('gpa') || lowerText.includes('improve')) {
-        response = responses.gpa;
-      } else if (lowerText.includes('programming') || lowerText.includes('resource') || lowerText.includes('find')) {
-        response = responses.programming;
-      } else if (lowerText.includes('internship') || lowerText.includes('prep')) {
-        response = responses.internship;
-      } else if (lowerText.includes('bookmark') || lowerText.includes('save')) {
-        response = responses.bookmark;
-      }
+      if (error) throw error;
 
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: response
+        content: data.message || "Xin lỗi, mình gặp sự cố. Bạn thử lại nhé!"
       };
 
       setMessages(prev => [...prev, assistantMessage]);
+    } catch (error) {
+      console.error('Chat error:', error);
+      const errorMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        role: 'assistant',
+        content: "😅 Xin lỗi, mình đang gặp trục trặc kỹ thuật. Bạn thử lại sau nhé!"
+      };
+      setMessages(prev => [...prev, errorMessage]);
+    } finally {
       setIsLoading(false);
-    }, 1000);
+    }
   };
+
+  const showQuickReplies = messages.length < 3;
 
   return (
     <>
-      {/* Chat Button */}
-      <motion.button
-        onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 w-14 h-14 rounded-full bg-gradient-to-r from-primary to-warning text-primary-foreground shadow-lg hover:shadow-glow z-50 flex items-center justify-center"
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.95 }}
-        animate={{ y: [0, -5, 0] }}
-        transition={{ repeat: Infinity, duration: 2 }}
-      >
-        <MessageCircle className="w-6 h-6" />
-        <span className="absolute -top-1 -right-1 w-4 h-4 bg-success rounded-full border-2 border-background animate-pulse" />
-      </motion.button>
+      {/* Floating Chat Button */}
+      <AnimatePresence>
+        {!isOpen && (
+          <motion.button
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0, opacity: 0 }}
+            onClick={() => setIsOpen(true)}
+            className="fixed bottom-6 right-6 w-14 h-14 rounded-full bg-gradient-to-r from-primary to-warning text-primary-foreground shadow-lg hover:shadow-glow z-50 flex items-center justify-center group"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <motion.div
+              animate={{ y: [0, -3, 0] }}
+              transition={{ repeat: Infinity, duration: 2 }}
+            >
+              <MessageCircle className="w-6 h-6" />
+            </motion.div>
+            <span className="absolute -top-1 -right-1 w-4 h-4 bg-success rounded-full border-2 border-background animate-pulse" />
+            
+            {/* Tooltip */}
+            <span className="absolute right-full mr-3 px-3 py-1.5 bg-card text-card-foreground text-sm rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+              Hỏi AI Assistant 💬
+            </span>
+          </motion.button>
+        )}
+      </AnimatePresence>
 
       {/* Chat Window */}
       <AnimatePresence>
@@ -110,62 +123,14 @@ export default function Chatbot() {
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            className="fixed bottom-24 right-6 w-[380px] h-[520px] bg-card rounded-2xl shadow-lifted border border-border z-50 flex flex-col overflow-hidden"
+            className="fixed bottom-6 right-6 w-[400px] max-w-[calc(100vw-3rem)] h-[600px] max-h-[calc(100vh-6rem)] bg-card rounded-2xl shadow-lifted border border-border z-50 flex flex-col overflow-hidden"
           >
-            {/* Header */}
-            <div className="flex items-center justify-between p-4 bg-gradient-to-r from-primary to-warning">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center">
-                  <Bot className="w-5 h-5 text-white" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-white">FPT Assistant</h3>
-                  <p className="text-xs text-white/80 flex items-center gap-1">
-                    <span className="w-2 h-2 bg-green-400 rounded-full" />
-                    Online 24/7
-                  </p>
-                </div>
-              </div>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => setIsOpen(false)}
-                className="text-white hover:bg-white/20"
-              >
-                <X className="w-5 h-5" />
-              </Button>
-            </div>
+            <ChatHeader onClose={() => setIsOpen(false)} />
 
-            {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4">
+            {/* Messages Container */}
+            <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gradient-to-b from-muted/30 to-background">
               {messages.map((message) => (
-                <motion.div
-                  key={message.id}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className={`flex gap-3 ${message.role === 'user' ? 'flex-row-reverse' : ''}`}
-                >
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${
-                    message.role === 'user' 
-                      ? 'bg-primary text-primary-foreground' 
-                      : 'bg-secondary text-secondary-foreground'
-                  }`}>
-                    {message.role === 'user' ? <User className="w-4 h-4" /> : <Sparkles className="w-4 h-4" />}
-                  </div>
-                  <div className={`max-w-[75%] rounded-2xl px-4 py-3 ${
-                    message.role === 'user'
-                      ? 'bg-primary text-primary-foreground rounded-br-sm'
-                      : 'bg-muted text-foreground rounded-bl-sm'
-                  }`}>
-                    {message.role === 'assistant' ? (
-                      <div className="prose prose-sm prose-p:my-1 prose-ul:my-1 prose-li:my-0">
-                        <ReactMarkdown>{message.content}</ReactMarkdown>
-                      </div>
-                    ) : (
-                      <p className="text-sm">{message.content}</p>
-                    )}
-                  </div>
-                </motion.div>
+                <ChatMessage key={message.id} message={message} />
               ))}
 
               {isLoading && (
@@ -174,11 +139,16 @@ export default function Chatbot() {
                   animate={{ opacity: 1 }}
                   className="flex gap-3"
                 >
-                  <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center">
-                    <Sparkles className="w-4 h-4 text-secondary-foreground" />
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-secondary to-primary/50 flex items-center justify-center">
+                    <Loader2 className="w-4 h-4 text-primary-foreground animate-spin" />
                   </div>
-                  <div className="bg-muted rounded-2xl rounded-bl-sm px-4 py-3">
-                    <Loader2 className="w-5 h-5 animate-spin text-muted-foreground" />
+                  <div className="bg-muted rounded-2xl rounded-bl-sm px-4 py-3 flex items-center gap-2">
+                    <div className="flex gap-1">
+                      <span className="w-2 h-2 bg-primary/60 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                      <span className="w-2 h-2 bg-primary/60 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                      <span className="w-2 h-2 bg-primary/60 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                    </div>
+                    <span className="text-sm text-muted-foreground">Đang suy nghĩ...</span>
                   </div>
                 </motion.div>
               )}
@@ -187,43 +157,12 @@ export default function Chatbot() {
             </div>
 
             {/* Quick Replies */}
-            {messages.length < 3 && (
-              <div className="px-4 pb-2">
-                <div className="flex gap-2 overflow-x-auto pb-2">
-                  {quickReplies.map((reply, index) => (
-                    <button
-                      key={index}
-                      onClick={() => handleSend(reply)}
-                      className="whitespace-nowrap px-3 py-1.5 text-xs bg-muted hover:bg-muted/80 rounded-full transition-colors"
-                    >
-                      {reply}
-                    </button>
-                  ))}
-                </div>
-              </div>
+            {showQuickReplies && !isLoading && (
+              <QuickReplies replies={quickReplies} onSelect={handleSend} />
             )}
 
             {/* Input */}
-            <div className="p-4 border-t border-border">
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  handleSend();
-                }}
-                className="flex gap-2"
-              >
-                <Input
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  placeholder="Ask me anything..."
-                  className="flex-1"
-                  disabled={isLoading}
-                />
-                <Button type="submit" size="icon" disabled={isLoading || !input.trim()}>
-                  <Send className="w-4 h-4" />
-                </Button>
-              </form>
-            </div>
+            <ChatInput onSend={handleSend} isLoading={isLoading} />
           </motion.div>
         )}
       </AnimatePresence>

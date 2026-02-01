@@ -96,7 +96,7 @@ export default function Chatbot() {
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0, opacity: 0 }}
             onClick={() => setIsOpen(true)}
-            className="fixed bottom-6 right-6 w-14 h-14 rounded-full bg-gradient-to-r from-primary to-warning text-primary-foreground shadow-lg hover:shadow-glow z-50 flex items-center justify-center group"
+            className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-r from-primary to-warning text-primary-foreground shadow-lg hover:shadow-glow z-50 flex items-center justify-center group"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -104,12 +104,12 @@ export default function Chatbot() {
               animate={{ y: [0, -3, 0] }}
               transition={{ repeat: Infinity, duration: 2 }}
             >
-              <MessageCircle className="w-6 h-6" />
+              <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6" />
             </motion.div>
-            <span className="absolute -top-1 -right-1 w-4 h-4 bg-success rounded-full border-2 border-background animate-pulse" />
+            <span className="absolute -top-1 -right-1 w-3 h-3 sm:w-4 sm:h-4 bg-success rounded-full border-2 border-background animate-pulse" />
             
-            {/* Tooltip */}
-            <span className="absolute right-full mr-3 px-3 py-1.5 bg-card text-card-foreground text-sm rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+            {/* Tooltip - hidden on mobile */}
+            <span className="absolute right-full mr-3 px-3 py-1.5 bg-card text-card-foreground text-sm rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap hidden sm:block">
               Hỏi AI Assistant 💬
             </span>
           </motion.button>
@@ -123,7 +123,9 @@ export default function Chatbot() {
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            className="fixed bottom-6 right-6 w-[400px] max-w-[calc(100vw-3rem)] h-[600px] max-h-[calc(100vh-6rem)] bg-card rounded-2xl shadow-lifted border border-border z-50 flex flex-col overflow-hidden"
+            className="fixed inset-4 sm:inset-auto sm:bottom-4 sm:right-4 md:bottom-6 md:right-6 
+                       sm:w-[360px] md:w-[400px] sm:h-[500px] md:h-[600px] 
+                       bg-card rounded-xl sm:rounded-2xl shadow-lifted border border-border z-50 flex flex-col overflow-hidden"
           >
             <ChatHeader onClose={() => setIsOpen(false)} />
 

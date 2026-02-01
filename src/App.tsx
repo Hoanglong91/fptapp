@@ -8,6 +8,7 @@ import AuthPage from "./pages/AuthPage";
 import MajorSelection from "./pages/MajorSelection";
 import SemesterView from "./pages/SemesterView";
 import GPAPage from "./pages/GPAPage";
+import ProfilePage from "./pages/ProfilePage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -82,6 +83,14 @@ const AppRoutes = () => (
       element={
         <ProtectedRoute>
           <GPAPage />
+        </ProtectedRoute>
+      }
+    />
+    <Route
+      path="/profile"
+      element={
+        <ProtectedRoute>
+          <ProfilePage />
         </ProtectedRoute>
       }
     />

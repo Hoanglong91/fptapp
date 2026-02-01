@@ -14,7 +14,96 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      learning_streaks: {
+        Row: {
+          created_at: string
+          current_streak: number
+          id: string
+          last_visit_date: string | null
+          longest_streak: number
+          total_visits: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          current_streak?: number
+          id?: string
+          last_visit_date?: string | null
+          longest_streak?: number
+          total_visits?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          current_streak?: number
+          id?: string
+          last_visit_date?: string | null
+          longest_streak?: number
+          total_visits?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          display_name: string | null
+          id: string
+          major: string | null
+          phone: string | null
+          student_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          major?: string | null
+          phone?: string | null
+          student_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          major?: string | null
+          phone?: string | null
+          student_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      visit_logs: {
+        Row: {
+          created_at: string
+          id: string
+          user_id: string
+          visit_date: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          user_id: string
+          visit_date?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          user_id?: string
+          visit_date?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

@@ -59,33 +59,33 @@ export default function SemesterView() {
     <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/30">
       <Navbar />
 
-      <main className="container py-8">
+      <main className="container py-4 sm:py-6 md:py-8 px-4 sm:px-6">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-10"
+          className="mb-6 sm:mb-8 md:mb-10"
         >
           <Button
             variant="ghost"
             onClick={() => selectedSemester ? setSelectedSemester(null) : navigate('/majors')}
-            className="mb-4 hover:bg-muted group"
+            className="mb-3 sm:mb-4 hover:bg-muted group text-sm"
           >
             <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" />
             {selectedSemester ? 'Quay lại danh sách học kỳ' : 'Quay lại chọn ngành'}
           </Button>
 
-          <div className="flex items-center gap-4 mb-2">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-warning flex items-center justify-center">
-              <Sparkles className="w-6 h-6 text-white" />
+          <div className="flex items-center gap-3 sm:gap-4 mb-2">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-gradient-to-br from-primary to-warning flex items-center justify-center shrink-0">
+              <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
             </div>
-            <div>
-              <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary via-foreground to-secondary bg-clip-text text-transparent">
+            <div className="min-w-0">
+              <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-primary via-foreground to-secondary bg-clip-text text-transparent truncate">
                 {majorName}
               </h1>
-              <p className="text-muted-foreground">
+              <p className="text-xs sm:text-sm text-muted-foreground truncate">
                 {selectedSemester 
-                  ? `${currentSemester?.name} ${currentSemester?.type === 'internship' ? '- Thực tập doanh nghiệp' : '- Tài liệu học tập'}`
+                  ? `${currentSemester?.name} ${currentSemester?.type === 'internship' ? '- Thực tập' : '- Tài liệu'}`
                   : 'Chọn học kỳ để xem tài liệu'
                 }
               </p>
@@ -127,49 +127,49 @@ export default function SemesterView() {
               exit={{ opacity: 0, x: 50 }}
             >
               {/* Search Bar */}
-              <div className="flex gap-4 mb-8">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6 sm:mb-8">
                 <div className="relative flex-1">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" />
                   <Input
-                    placeholder="Tìm kiếm tài liệu, video, bài nghiên cứu..."
+                    placeholder="Tìm kiếm tài liệu..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-10 h-12 bg-card border-border/50 focus:border-primary"
+                    className="pl-9 sm:pl-10 h-10 sm:h-12 bg-card border-border/50 focus:border-primary text-sm"
                   />
                 </div>
-                <Button variant="outline" className="h-12 px-6">
+                <Button variant="outline" className="h-10 sm:h-12 px-4 sm:px-6 w-full sm:w-auto">
                   <Filter className="w-4 h-4 mr-2" />
                   Lọc
                 </Button>
               </div>
 
               {/* Stats Bar */}
-              <div className="grid grid-cols-3 gap-4 mb-8">
-                <div className="bg-blue-500/10 rounded-xl p-4 text-center">
-                  <FileText className="w-6 h-6 text-blue-500 mx-auto mb-2" />
-                  <p className="text-2xl font-bold text-blue-500">{documentResources.length}</p>
-                  <p className="text-xs text-muted-foreground">Tài liệu</p>
+              <div className="grid grid-cols-3 gap-2 sm:gap-3 md:gap-4 mb-6 sm:mb-8">
+                <div className="bg-blue-500/10 rounded-lg sm:rounded-xl p-2.5 sm:p-3 md:p-4 text-center">
+                  <FileText className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-blue-500 mx-auto mb-1 sm:mb-2" />
+                  <p className="text-lg sm:text-xl md:text-2xl font-bold text-blue-500">{documentResources.length}</p>
+                  <p className="text-[10px] sm:text-xs text-muted-foreground">Tài liệu</p>
                 </div>
-                <div className="bg-red-500/10 rounded-xl p-4 text-center">
-                  <Youtube className="w-6 h-6 text-red-500 mx-auto mb-2" />
-                  <p className="text-2xl font-bold text-red-500">{videoResources.length}</p>
-                  <p className="text-xs text-muted-foreground">Video</p>
+                <div className="bg-red-500/10 rounded-lg sm:rounded-xl p-2.5 sm:p-3 md:p-4 text-center">
+                  <Youtube className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-red-500 mx-auto mb-1 sm:mb-2" />
+                  <p className="text-lg sm:text-xl md:text-2xl font-bold text-red-500">{videoResources.length}</p>
+                  <p className="text-[10px] sm:text-xs text-muted-foreground">Video</p>
                 </div>
-                <div className="bg-purple-500/10 rounded-xl p-4 text-center">
-                  <BookOpen className="w-6 h-6 text-purple-500 mx-auto mb-2" />
-                  <p className="text-2xl font-bold text-purple-500">{researchResources.length}</p>
-                  <p className="text-xs text-muted-foreground">Nghiên cứu</p>
+                <div className="bg-purple-500/10 rounded-lg sm:rounded-xl p-2.5 sm:p-3 md:p-4 text-center">
+                  <BookOpen className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-purple-500 mx-auto mb-1 sm:mb-2" />
+                  <p className="text-lg sm:text-xl md:text-2xl font-bold text-purple-500">{researchResources.length}</p>
+                  <p className="text-[10px] sm:text-xs text-muted-foreground">Nghiên cứu</p>
                 </div>
               </div>
 
               {currentSemester?.type === 'internship' ? (
                 /* Internship Content */
                 <div>
-                  <div className="flex items-center gap-3 mb-6">
-                    <Briefcase className="w-6 h-6 text-warning" />
-                    <h2 className="text-xl font-bold">Tài liệu Thực tập Doanh nghiệp (OJT)</h2>
+                  <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
+                    <Briefcase className="w-5 h-5 sm:w-6 sm:h-6 text-warning" />
+                    <h2 className="text-base sm:text-lg md:text-xl font-bold">Tài liệu Thực tập (OJT)</h2>
                   </div>
-                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-5">
                     {filteredResources.map((resource, index) => (
                       <ResourceCard
                         key={resource.id}
@@ -185,32 +185,32 @@ export default function SemesterView() {
               ) : (
                 /* Regular Semester Tabs */
                 <Tabs defaultValue="documents" className="w-full">
-                  <TabsList className="grid w-full grid-cols-3 mb-8 bg-muted/50 p-1.5 rounded-xl h-auto">
+                  <TabsList className="grid w-full grid-cols-3 mb-6 sm:mb-8 bg-muted/50 p-1 sm:p-1.5 rounded-lg sm:rounded-xl h-auto">
                     <TabsTrigger 
                       value="documents" 
-                      className="rounded-lg py-3 data-[state=active]:bg-card data-[state=active]:shadow-md data-[state=active]:text-blue-600"
+                      className="rounded-md sm:rounded-lg py-2 sm:py-3 text-xs sm:text-sm data-[state=active]:bg-card data-[state=active]:shadow-md data-[state=active]:text-blue-600"
                     >
-                      <FileText className="w-4 h-4 mr-2" />
-                      Tài liệu ({documentResources.length})
+                      <FileText className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+                      <span className="hidden xs:inline">Tài liệu</span> ({documentResources.length})
                     </TabsTrigger>
                     <TabsTrigger 
                       value="videos" 
-                      className="rounded-lg py-3 data-[state=active]:bg-card data-[state=active]:shadow-md data-[state=active]:text-red-500"
+                      className="rounded-md sm:rounded-lg py-2 sm:py-3 text-xs sm:text-sm data-[state=active]:bg-card data-[state=active]:shadow-md data-[state=active]:text-red-500"
                     >
-                      <Youtube className="w-4 h-4 mr-2" />
-                      Video ({videoResources.length})
+                      <Youtube className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+                      <span className="hidden xs:inline">Video</span> ({videoResources.length})
                     </TabsTrigger>
                     <TabsTrigger 
                       value="research" 
-                      className="rounded-lg py-3 data-[state=active]:bg-card data-[state=active]:shadow-md data-[state=active]:text-purple-500"
+                      className="rounded-md sm:rounded-lg py-2 sm:py-3 text-xs sm:text-sm data-[state=active]:bg-card data-[state=active]:shadow-md data-[state=active]:text-purple-500"
                     >
-                      <BookOpen className="w-4 h-4 mr-2" />
-                      Nghiên cứu ({researchResources.length})
+                      <BookOpen className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+                      <span className="hidden xs:inline">NC</span> ({researchResources.length})
                     </TabsTrigger>
                   </TabsList>
 
                   <TabsContent value="documents">
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-5">
                       {documentResources.length > 0 ? (
                         documentResources.map((doc, index) => (
                           <ResourceCard
@@ -229,7 +229,7 @@ export default function SemesterView() {
                   </TabsContent>
 
                   <TabsContent value="videos">
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-5">
                       {videoResources.length > 0 ? (
                         videoResources.map((video, index) => (
                           <ResourceCard
@@ -248,7 +248,7 @@ export default function SemesterView() {
                   </TabsContent>
 
                   <TabsContent value="research">
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-5">
                       {researchResources.length > 0 ? (
                         researchResources.map((paper, index) => (
                           <ResourceCard
@@ -283,18 +283,18 @@ export default function SemesterView() {
 
 function EmptyState({ type }: { type: string }) {
   const messages: Record<string, { icon: React.ReactNode; text: string }> = {
-    documents: { icon: <FileText className="w-12 h-12 text-muted-foreground/50" />, text: 'Chưa có tài liệu cho học kỳ này' },
-    videos: { icon: <Youtube className="w-12 h-12 text-muted-foreground/50" />, text: 'Chưa có video cho học kỳ này' },
-    research: { icon: <BookOpen className="w-12 h-12 text-muted-foreground/50" />, text: 'Chưa có bài nghiên cứu cho học kỳ này' },
+    documents: { icon: <FileText className="w-10 h-10 sm:w-12 sm:h-12 text-muted-foreground/50" />, text: 'Chưa có tài liệu cho học kỳ này' },
+    videos: { icon: <Youtube className="w-10 h-10 sm:w-12 sm:h-12 text-muted-foreground/50" />, text: 'Chưa có video cho học kỳ này' },
+    research: { icon: <BookOpen className="w-10 h-10 sm:w-12 sm:h-12 text-muted-foreground/50" />, text: 'Chưa có bài nghiên cứu cho học kỳ này' },
   };
 
   const { icon, text } = messages[type] || messages.documents;
 
   return (
-    <div className="col-span-3 flex flex-col items-center justify-center py-16 text-center">
+    <div className="col-span-1 sm:col-span-2 lg:col-span-3 flex flex-col items-center justify-center py-12 sm:py-16 text-center px-4">
       {icon}
-      <p className="mt-4 text-muted-foreground">{text}</p>
-      <p className="text-sm text-muted-foreground/70">Tài liệu sẽ được cập nhật sớm</p>
+      <p className="mt-3 sm:mt-4 text-sm sm:text-base text-muted-foreground">{text}</p>
+      <p className="text-xs sm:text-sm text-muted-foreground/70">Tài liệu sẽ được cập nhật sớm</p>
     </div>
   );
 }

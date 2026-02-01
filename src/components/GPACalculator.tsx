@@ -91,11 +91,11 @@ export default function GPACalculator() {
   const gpaPercentage = (gpa / 4) * 100;
 
   const getGPAStatus = () => {
-    if (gpa >= 3.6) return { text: 'Excellent', color: 'text-green-500' };
-    if (gpa >= 3.2) return { text: 'Very Good', color: 'text-blue-500' };
-    if (gpa >= 2.5) return { text: 'Good', color: 'text-yellow-500' };
-    if (gpa >= 2.0) return { text: 'Average', color: 'text-orange-500' };
-    return { text: 'Need Improvement', color: 'text-red-500' };
+    if (gpa >= 3.6) return { text: 'Xuất sắc', color: 'text-green-500' };
+    if (gpa >= 3.2) return { text: 'Giỏi', color: 'text-blue-500' };
+    if (gpa >= 2.5) return { text: 'Khá', color: 'text-yellow-500' };
+    if (gpa >= 2.0) return { text: 'Trung bình', color: 'text-orange-500' };
+    return { text: 'Cần cải thiện', color: 'text-red-500' };
   };
 
   const status = getGPAStatus();
@@ -104,28 +104,28 @@ export default function GPACalculator() {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="mt-12 bg-card rounded-2xl border border-border overflow-hidden"
+      className="mt-8 sm:mt-12 bg-card rounded-xl sm:rounded-2xl border border-border overflow-hidden"
     >
       {/* Header */}
       <button
         onClick={() => setIsExpanded(!isExpanded)}
-        className="w-full p-6 flex items-center justify-between bg-gradient-to-r from-primary/5 to-secondary/5 hover:from-primary/10 hover:to-secondary/10 transition-colors"
+        className="w-full p-4 sm:p-6 flex items-center justify-between bg-gradient-to-r from-primary/5 to-secondary/5 hover:from-primary/10 hover:to-secondary/10 transition-colors"
       >
-        <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center">
-            <Calculator className="w-6 h-6 text-primary-foreground" />
+        <div className="flex items-center gap-3 sm:gap-4">
+          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-primary flex items-center justify-center shrink-0">
+            <Calculator className="w-5 h-5 sm:w-6 sm:h-6 text-primary-foreground" />
           </div>
           <div className="text-left">
-            <h2 className="text-xl font-bold">GPA Calculator</h2>
-            <p className="text-sm text-muted-foreground">Track your academic performance</p>
+            <h2 className="text-base sm:text-lg md:text-xl font-bold">Tính GPA</h2>
+            <p className="text-xs sm:text-sm text-muted-foreground hidden sm:block">Theo dõi kết quả học tập</p>
           </div>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 sm:gap-4">
           <div className="text-right">
-            <p className="text-3xl font-bold text-primary">{calculateGPA()}</p>
-            <p className={`text-sm font-medium ${status.color}`}>{status.text}</p>
+            <p className="text-xl sm:text-2xl md:text-3xl font-bold text-primary">{calculateGPA()}</p>
+            <p className={`text-xs sm:text-sm font-medium ${status.color}`}>{status.text}</p>
           </div>
-          {isExpanded ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+          {isExpanded ? <ChevronUp className="w-4 h-4 sm:w-5 sm:h-5" /> : <ChevronDown className="w-4 h-4 sm:w-5 sm:h-5" />}
         </div>
       </button>
 
@@ -138,29 +138,97 @@ export default function GPACalculator() {
             transition={{ duration: 0.3 }}
             className="overflow-hidden"
           >
-            <div className="p-6 space-y-6">
+            <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
               {/* GPA Progress */}
-              <div className="flex items-center gap-6">
-                <div className="flex-1">
-                  <div className="flex justify-between mb-2 text-sm">
-                    <span className="text-muted-foreground">GPA Progress</span>
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-6">
+                <div className="flex-1 w-full">
+                  <div className="flex justify-between mb-2 text-xs sm:text-sm">
+                    <span className="text-muted-foreground">Tiến độ GPA</span>
                     <span className="font-medium">{gpa} / 4.0</span>
                   </div>
-                  <Progress value={gpaPercentage} className="h-3" />
+                  <Progress value={gpaPercentage} className="h-2 sm:h-3" />
                 </div>
-                <div className="flex items-center gap-2 px-4 py-2 bg-muted rounded-xl">
-                  <Award className="w-5 h-5 text-warning" />
-                  <span className="font-medium">{subjects.reduce((acc, s) => acc + s.credits, 0)} Credits</span>
+                <div className="flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-muted rounded-lg sm:rounded-xl">
+                  <Award className="w-4 h-4 sm:w-5 sm:h-5 text-warning" />
+                  <span className="text-sm sm:text-base font-medium">{subjects.reduce((acc, s) => acc + s.credits, 0)} tín chỉ</span>
                 </div>
               </div>
 
-              {/* Subjects List */}
-              <div className="space-y-3">
-                <div className="grid grid-cols-12 gap-3 text-sm font-medium text-muted-foreground px-2">
-                  <div className="col-span-5">Subject Name</div>
-                  <div className="col-span-2 text-center">Credits</div>
-                  <div className="col-span-2 text-center">Score</div>
-                  <div className="col-span-2 text-center">Grade</div>
+              {/* Subjects List - Mobile Cards */}
+              <div className="space-y-3 sm:hidden">
+                <AnimatePresence>
+                  {subjects.map((subject) => {
+                    const grade = getGradeFromScore(subject.score);
+                    return (
+                      <motion.div
+                        key={subject.id}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: 20 }}
+                        className="bg-muted/50 rounded-lg p-3 space-y-2"
+                      >
+                        <div className="flex justify-between items-center">
+                          <Input
+                            value={subject.name}
+                            onChange={(e) => updateSubject(subject.id, 'name', e.target.value)}
+                            placeholder="Tên môn học"
+                            className="h-9 text-sm flex-1 mr-2"
+                          />
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => removeSubject(subject.id)}
+                            className="h-8 w-8 text-muted-foreground hover:text-destructive shrink-0"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <div className="flex-1">
+                            <label className="text-xs text-muted-foreground">Tín chỉ</label>
+                            <Input
+                              type="number"
+                              min="1"
+                              max="6"
+                              value={subject.credits}
+                              onChange={(e) => updateSubject(subject.id, 'credits', parseInt(e.target.value) || 0)}
+                              className="h-9 text-sm text-center"
+                            />
+                          </div>
+                          <div className="flex-1">
+                            <label className="text-xs text-muted-foreground">Điểm</label>
+                            <Input
+                              type="number"
+                              min="0"
+                              max="10"
+                              step="0.1"
+                              value={subject.score}
+                              onChange={(e) => updateSubject(subject.id, 'score', parseFloat(e.target.value) || 0)}
+                              className="h-9 text-sm text-center"
+                            />
+                          </div>
+                          <div className="text-center">
+                            <label className="text-xs text-muted-foreground">Xếp loại</label>
+                            <div className="mt-1">
+                              <span className={`px-2 py-1 rounded-md font-semibold text-xs ${getGradeColor(grade)}`}>
+                                {grade}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </motion.div>
+                    );
+                  })}
+                </AnimatePresence>
+              </div>
+
+              {/* Subjects List - Desktop Table */}
+              <div className="hidden sm:block space-y-3">
+                <div className="grid grid-cols-12 gap-2 sm:gap-3 text-xs sm:text-sm font-medium text-muted-foreground px-2">
+                  <div className="col-span-5">Môn học</div>
+                  <div className="col-span-2 text-center">Tín chỉ</div>
+                  <div className="col-span-2 text-center">Điểm</div>
+                  <div className="col-span-2 text-center">Xếp loại</div>
                   <div className="col-span-1"></div>
                 </div>
 
@@ -173,14 +241,14 @@ export default function GPACalculator() {
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, x: 20 }}
-                        className="grid grid-cols-12 gap-3 items-center"
+                        className="grid grid-cols-12 gap-2 sm:gap-3 items-center"
                       >
                         <div className="col-span-5">
                           <Input
                             value={subject.name}
                             onChange={(e) => updateSubject(subject.id, 'name', e.target.value)}
-                            placeholder="Subject name"
-                            className="h-10"
+                            placeholder="Tên môn học"
+                            className="h-9 sm:h-10 text-sm"
                           />
                         </div>
                         <div className="col-span-2">
@@ -190,7 +258,7 @@ export default function GPACalculator() {
                             max="6"
                             value={subject.credits}
                             onChange={(e) => updateSubject(subject.id, 'credits', parseInt(e.target.value) || 0)}
-                            className="h-10 text-center"
+                            className="h-9 sm:h-10 text-sm text-center"
                           />
                         </div>
                         <div className="col-span-2">
@@ -201,11 +269,11 @@ export default function GPACalculator() {
                             step="0.1"
                             value={subject.score}
                             onChange={(e) => updateSubject(subject.id, 'score', parseFloat(e.target.value) || 0)}
-                            className="h-10 text-center"
+                            className="h-9 sm:h-10 text-sm text-center"
                           />
                         </div>
                         <div className="col-span-2 flex justify-center">
-                          <span className={`px-3 py-1 rounded-lg font-semibold text-sm ${getGradeColor(grade)}`}>
+                          <span className={`px-2 sm:px-3 py-0.5 sm:py-1 rounded-md sm:rounded-lg font-semibold text-xs sm:text-sm ${getGradeColor(grade)}`}>
                             {grade}
                           </span>
                         </div>
@@ -214,9 +282,9 @@ export default function GPACalculator() {
                             variant="ghost"
                             size="icon"
                             onClick={() => removeSubject(subject.id)}
-                            className="h-8 w-8 text-muted-foreground hover:text-destructive"
+                            className="h-7 w-7 sm:h-8 sm:w-8 text-muted-foreground hover:text-destructive"
                           >
-                            <Trash2 className="w-4 h-4" />
+                            <Trash2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                           </Button>
                         </div>
                       </motion.div>
@@ -229,20 +297,20 @@ export default function GPACalculator() {
               <Button
                 variant="outline"
                 onClick={addSubject}
-                className="w-full border-dashed"
+                className="w-full border-dashed h-10 text-sm"
               >
                 <Plus className="w-4 h-4 mr-2" />
-                Add Subject
+                Thêm môn học
               </Button>
 
               {/* Tips */}
-              <div className="flex items-start gap-3 p-4 bg-primary/5 rounded-xl">
-                <TrendingUp className="w-5 h-5 text-primary mt-0.5" />
-                <div className="text-sm">
-                  <p className="font-medium text-foreground mb-1">GPA Tip</p>
+              <div className="flex items-start gap-2 sm:gap-3 p-3 sm:p-4 bg-primary/5 rounded-lg sm:rounded-xl">
+                <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-primary mt-0.5 shrink-0" />
+                <div className="text-xs sm:text-sm">
+                  <p className="font-medium text-foreground mb-0.5 sm:mb-1">Mẹo cải thiện GPA</p>
                   <p className="text-muted-foreground">
-                    Focus on subjects with higher credits as they have more impact on your GPA. 
-                    Aim for at least 3.2 GPA to qualify for honors.
+                    Tập trung vào các môn có nhiều tín chỉ vì chúng ảnh hưởng lớn đến GPA. 
+                    Đạt GPA từ 3.2 trở lên để được xét học bổng.
                   </p>
                 </div>
               </div>

@@ -91,7 +91,7 @@ export default function AuthPage() {
   return (
     <div className="min-h-screen flex">
       {/* Left Side - Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-background">
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-4 sm:p-6 md:p-8 bg-background">
         <motion.div
           className="w-full max-w-md"
           variants={containerVariants}
@@ -99,67 +99,69 @@ export default function AuthPage() {
           animate="visible"
         >
           {/* Logo */}
-          <motion.div variants={itemVariants} className="flex items-center gap-3 mb-8">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-warning flex items-center justify-center">
-              <GraduationCap className="w-7 h-7 text-primary-foreground" />
+          <motion.div variants={itemVariants} className="flex items-center gap-2 sm:gap-3 mb-6 sm:mb-8">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-gradient-to-br from-primary to-warning flex items-center justify-center">
+              <GraduationCap className="w-5 h-5 sm:w-7 sm:h-7 text-primary-foreground" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-foreground">FPT Learn</h1>
-              <p className="text-sm text-muted-foreground">Student Portal</p>
+              <h1 className="text-xl sm:text-2xl font-bold text-foreground">FPT Learn</h1>
+              <p className="text-xs sm:text-sm text-muted-foreground">Student Portal</p>
             </div>
           </motion.div>
 
           {/* Title */}
-          <motion.div variants={itemVariants} className="mb-8">
-            <h2 className="text-3xl font-bold text-foreground mb-2">
-              {mode === 'login' && 'Welcome Back!'}
-              {mode === 'signup' && 'Create Account'}
-              {mode === 'forgot' && 'Reset Password'}
+          <motion.div variants={itemVariants} className="mb-6 sm:mb-8">
+            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-1 sm:mb-2">
+              {mode === 'login' && 'Chào mừng trở lại!'}
+              {mode === 'signup' && 'Tạo tài khoản'}
+              {mode === 'forgot' && 'Đặt lại mật khẩu'}
             </h2>
-            <p className="text-muted-foreground">
-              {mode === 'login' && 'Sign in to continue your learning journey'}
-              {mode === 'signup' && 'Join thousands of FPT students'}
-              {mode === 'forgot' && 'Enter your email to receive reset instructions'}
+            <p className="text-sm sm:text-base text-muted-foreground">
+              {mode === 'login' && 'Đăng nhập để tiếp tục hành trình học tập'}
+              {mode === 'signup' && 'Tham gia cùng sinh viên FPT'}
+              {mode === 'forgot' && 'Nhập email để nhận hướng dẫn đặt lại mật khẩu'}
             </p>
           </motion.div>
 
           {/* Form */}
-          <motion.form variants={itemVariants} onSubmit={handleSubmit} className="space-y-5">
+          <motion.form variants={itemVariants} onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
             <div>
-              <label className="block text-sm font-medium text-foreground mb-2">
-                Email / Student ID
+              <label className="block text-sm font-medium text-foreground mb-1.5 sm:mb-2">
+                Email / Mã sinh viên
               </label>
               <Input
                 type="email"
                 placeholder="your.email@fpt.edu.vn"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                icon={<Mail className="w-5 h-5" />}
+                icon={<Mail className="w-4 h-4 sm:w-5 sm:h-5" />}
                 required
+                className="h-10 sm:h-12"
               />
             </div>
 
             {mode !== 'forgot' && (
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
-                  Password
+                <label className="block text-sm font-medium text-foreground mb-1.5 sm:mb-2">
+                  Mật khẩu
                 </label>
                 <div className="relative">
                   <Input
                     type={showPassword ? 'text' : 'password'}
-                    placeholder="Enter your password"
+                    placeholder="Nhập mật khẩu"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    icon={<Lock className="w-5 h-5" />}
+                    icon={<Lock className="w-4 h-4 sm:w-5 sm:h-5" />}
                     required
                     minLength={6}
+                    className="h-10 sm:h-12"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
                   >
-                    {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                    {showPassword ? <EyeOff className="w-4 h-4 sm:w-5 sm:h-5" /> : <Eye className="w-4 h-4 sm:w-5 sm:h-5" />}
                   </button>
                 </div>
               </div>
@@ -167,17 +169,18 @@ export default function AuthPage() {
 
             {mode === 'signup' && (
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
-                  Confirm Password
+                <label className="block text-sm font-medium text-foreground mb-1.5 sm:mb-2">
+                  Xác nhận mật khẩu
                 </label>
                 <Input
                   type={showPassword ? 'text' : 'password'}
-                  placeholder="Confirm your password"
+                  placeholder="Nhập lại mật khẩu"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  icon={<Lock className="w-5 h-5" />}
+                  icon={<Lock className="w-4 h-4 sm:w-5 sm:h-5" />}
                   required
                   minLength={6}
+                  className="h-10 sm:h-12"
                 />
               </div>
             )}
@@ -187,9 +190,9 @@ export default function AuthPage() {
                 <button
                   type="button"
                   onClick={() => setMode('forgot')}
-                  className="text-sm text-primary hover:underline font-medium"
+                  className="text-xs sm:text-sm text-primary hover:underline font-medium"
                 >
-                  Forgot password?
+                  Quên mật khẩu?
                 </button>
               </div>
             )}
@@ -198,38 +201,38 @@ export default function AuthPage() {
               type="submit"
               variant="hero"
               size="lg"
-              className="w-full"
+              className="w-full h-10 sm:h-12"
               disabled={loading}
             >
               {loading ? (
                 <div className="w-5 h-5 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
               ) : (
                 <>
-                  {mode === 'login' && 'Sign In'}
-                  {mode === 'signup' && 'Create Account'}
-                  {mode === 'forgot' && 'Send Reset Link'}
+                  {mode === 'login' && 'Đăng nhập'}
+                  {mode === 'signup' && 'Tạo tài khoản'}
+                  {mode === 'forgot' && 'Gửi link đặt lại'}
                 </>
               )}
             </Button>
           </motion.form>
 
           {/* Mode Switch */}
-          <motion.div variants={itemVariants} className="mt-6 text-center">
+          <motion.div variants={itemVariants} className="mt-5 sm:mt-6 text-center">
             {mode === 'forgot' ? (
               <button
                 onClick={() => setMode('login')}
-                className="inline-flex items-center gap-2 text-primary hover:underline font-medium"
+                className="inline-flex items-center gap-2 text-primary hover:underline font-medium text-sm"
               >
-                <ArrowLeft className="w-4 h-4" /> Back to login
+                <ArrowLeft className="w-4 h-4" /> Quay lại đăng nhập
               </button>
             ) : (
-              <p className="text-muted-foreground">
-                {mode === 'login' ? "Don't have an account? " : 'Already have an account? '}
+              <p className="text-sm text-muted-foreground">
+                {mode === 'login' ? 'Chưa có tài khoản? ' : 'Đã có tài khoản? '}
                 <button
                   onClick={() => setMode(mode === 'login' ? 'signup' : 'login')}
                   className="text-primary hover:underline font-semibold"
                 >
-                  {mode === 'login' ? 'Sign up' : 'Sign in'}
+                  {mode === 'login' ? 'Đăng ký' : 'Đăng nhập'}
                 </button>
               </p>
             )}

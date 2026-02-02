@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, BookOpen, FileText, Youtube, Briefcase, Search, Filter, Sparkles } from 'lucide-react';
+import { ArrowLeft, BookOpen, FileText, Youtube, Briefcase, Search, Filter, Sparkles, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -11,28 +11,25 @@ import GPACalculator from '@/components/GPACalculator';
 import ResourceCard from '@/components/semester/ResourceCard';
 import SemesterCard from '@/components/semester/SemesterCard';
 import { courseData, internshipResources, majorNames, semesterData, CourseResource } from '@/data/courseData';
+import { useFavorites } from '@/hooks/useFavorites';
 
 export default function SemesterView() {
   const { majorId } = useParams();
   const navigate = useNavigate();
-  const [selectedSemester, setSelectedSemester] = useState<number | null>(null);
+  const [searchParams] = useSearchParams();
+  const initialSemester = searchParams.get('semester') ? parseInt(searchParams.get('semester')!) : null;
+  const [selectedSemester, setSelectedSemester] = useState<number | null>(initialSemester);
   const [searchQuery, setSearchQuery] = useState('');
-  const [bookmarkedItems, setBookmarkedItems] = useState<Set<string>>(new Set());
+  const { isFavorite, toggleFavorite } = useFavorites();
 
   const majorName = majorNames[majorId || ''] || 'Unknown Major';
   const currentSemester = semesterData.find(s => s.id === selectedSemester);
 
-  const toggleBookmark = (e: React.MouseEvent, itemId: string) => {
+  const handleToggleFavorite = (e: React.MouseEvent, resource: CourseResource) => {
     e.stopPropagation();
-    setBookmarkedItems(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(itemId)) {
-        newSet.delete(itemId);
-      } else {
-        newSet.add(itemId);
-      }
-      return newSet;
-    });
+    if (majorId && selectedSemester) {
+      toggleFavorite(String(resource.id), resource.title, selectedSemester, majorId);
+    }
   };
 
   const getCurrentResources = (): CourseResource[] => {
@@ -175,8 +172,8 @@ export default function SemesterView() {
                         key={resource.id}
                         resource={resource}
                         index={index}
-                        isBookmarked={bookmarkedItems.has(`${resource.type}-${resource.id}`)}
-                        onBookmark={(e) => toggleBookmark(e, `${resource.type}-${resource.id}`)}
+                        isBookmarked={majorId ? isFavorite(String(resource.id), majorId) : false}
+                        onBookmark={(e) => handleToggleFavorite(e, resource)}
                         onClick={() => openResource(resource.url)}
                       />
                     ))}
@@ -217,8 +214,8 @@ export default function SemesterView() {
                             key={doc.id}
                             resource={doc}
                             index={index}
-                            isBookmarked={bookmarkedItems.has(`documents-${doc.id}`)}
-                            onBookmark={(e) => toggleBookmark(e, `documents-${doc.id}`)}
+                            isBookmarked={majorId ? isFavorite(String(doc.id), majorId) : false}
+                            onBookmark={(e) => handleToggleFavorite(e, doc)}
                             onClick={() => openResource(doc.url)}
                           />
                         ))
@@ -236,8 +233,8 @@ export default function SemesterView() {
                             key={video.id}
                             resource={video}
                             index={index}
-                            isBookmarked={bookmarkedItems.has(`videos-${video.id}`)}
-                            onBookmark={(e) => toggleBookmark(e, `videos-${video.id}`)}
+                            isBookmarked={majorId ? isFavorite(String(video.id), majorId) : false}
+                            onBookmark={(e) => handleToggleFavorite(e, video)}
                             onClick={() => openResource(video.url)}
                           />
                         ))
@@ -255,8 +252,8 @@ export default function SemesterView() {
                             key={paper.id}
                             resource={paper}
                             index={index}
-                            isBookmarked={bookmarkedItems.has(`research-${paper.id}`)}
-                            onBookmark={(e) => toggleBookmark(e, `research-${paper.id}`)}
+                            isBookmarked={majorId ? isFavorite(String(paper.id), majorId) : false}
+                            onBookmark={(e) => handleToggleFavorite(e, paper)}
                             onClick={() => openResource(paper.url)}
                           />
                         ))

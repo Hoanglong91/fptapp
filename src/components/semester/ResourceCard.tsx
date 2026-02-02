@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { BookOpen, FileText, Youtube, Briefcase, Star, ExternalLink, Bookmark, Play, GraduationCap } from 'lucide-react';
+import { BookOpen, FileText, Briefcase, Star, ExternalLink, Heart, Play, GraduationCap } from 'lucide-react';
 import { CourseResource } from '@/data/courseData';
 
 interface ResourceCardProps {
@@ -76,17 +76,17 @@ export default function ResourceCard({ resource, isBookmarked, onBookmark, onCli
       onClick={onClick}
       className={`group relative bg-card rounded-lg sm:rounded-xl border border-border p-3 sm:p-4 md:p-5 cursor-pointer transition-all duration-300 ${styles.border} ${styles.glow} hover:shadow-lg hover:-translate-y-1`}
     >
-      {/* Type Badge */}
+      {/* Favorite Badge */}
       <div className="absolute top-2 sm:top-3 right-2 sm:right-3 flex items-center gap-1.5 sm:gap-2">
         <button
           onClick={onBookmark}
           className={`p-1 sm:p-1.5 rounded-md sm:rounded-lg transition-all duration-200 ${
             isBookmarked 
-              ? 'text-primary bg-primary/10 scale-110' 
-              : 'text-muted-foreground hover:text-primary hover:bg-primary/10 opacity-0 group-hover:opacity-100'
+              ? 'text-pink-500 bg-pink-500/10 scale-110' 
+              : 'text-muted-foreground hover:text-pink-500 hover:bg-pink-500/10 opacity-0 group-hover:opacity-100'
           }`}
         >
-          <Bookmark className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${isBookmarked ? 'fill-current' : ''}`} />
+          <Heart className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${isBookmarked ? 'fill-current' : ''}`} />
         </button>
       </div>
 

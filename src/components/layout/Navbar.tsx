@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { GraduationCap, LogOut, User, Menu, X, Flame, Home, Calculator } from 'lucide-react';
+import { GraduationCap, LogOut, User, Menu, Flame, Home, Calculator, Heart } from 'lucide-react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
@@ -14,6 +14,7 @@ import {
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/sheet';
 import StreakBadge from '@/components/profile/StreakBadge';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 export default function Navbar() {
   const { user, signOut } = useAuth();
@@ -32,6 +33,7 @@ export default function Navbar() {
   const navLinks = [
     { href: '/majors', label: 'Trang chủ', icon: Home },
     { href: '/gpa', label: 'Tính GPA', icon: Calculator },
+    { href: '/favorites', label: 'Yêu thích', icon: Heart },
   ];
 
   const isActive = (path: string) => location.pathname === path;
@@ -64,8 +66,11 @@ export default function Navbar() {
           ))}
         </div>
 
-        {/* Right side: Streak + User Menu */}
-        <div className="flex items-center gap-2 sm:gap-4">
+        {/* Right side: Theme + Streak + User Menu */}
+        <div className="flex items-center gap-1 sm:gap-3">
+          {/* Theme Toggle */}
+          <ThemeToggle />
+
           {/* Streak Badge */}
           {user && streak.currentStreak > 0 && (
             <StreakBadge

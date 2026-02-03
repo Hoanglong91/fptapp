@@ -7,6 +7,8 @@ import Navbar from '@/components/layout/Navbar';
 import ProfileForm from '@/components/profile/ProfileForm';
 import PasswordForm from '@/components/profile/PasswordForm';
 import StreakBadge from '@/components/profile/StreakBadge';
+import VisitHistory from '@/components/profile/VisitHistory';
+import OnlineUsersCounter from '@/components/OnlineUsersCounter';
 import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
 import { useLearningStreak } from '@/hooks/useLearningStreak';
@@ -84,22 +86,41 @@ export default function ProfilePage() {
           </div>
         </motion.div>
 
-        {/* Streak Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="mb-6 sm:mb-10"
-        >
-          <h2 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 flex items-center gap-2">
-            🔥 Chuỗi học tập của bạn
-          </h2>
-          <StreakBadge
-            currentStreak={streak.currentStreak}
-            longestStreak={streak.longestStreak}
-            totalVisits={streak.totalVisits}
-          />
-        </motion.div>
+        {/* Stats Section */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-10">
+          {/* Streak Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+          >
+            <h2 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 flex items-center gap-2">
+              🔥 Chuỗi học tập của bạn
+            </h2>
+            <StreakBadge
+              currentStreak={streak.currentStreak}
+              longestStreak={streak.longestStreak}
+              totalVisits={streak.totalVisits}
+            />
+          </motion.div>
+
+          {/* Online Users Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.15 }}
+          >
+            <h2 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 flex items-center gap-2">
+              👥 Cộng đồng
+            </h2>
+            <OnlineUsersCounter />
+          </motion.div>
+        </div>
+
+        {/* Visit History */}
+        <div className="mb-6 sm:mb-10">
+          <VisitHistory />
+        </div>
 
         {/* Forms */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">

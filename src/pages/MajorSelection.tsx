@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
 import Navbar from '@/components/layout/Navbar';
 import Chatbot from '@/components/Chatbot';
+import CommunityChat from '@/components/CommunityChat';
 
 const majors = [
   {
@@ -169,6 +170,7 @@ export default function MajorSelection() {
         </motion.p>
       </main>
 
+      <CommunityChat />
       <Chatbot />
     </div>
   );

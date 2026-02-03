@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Navbar from '@/components/layout/Navbar';
 import Chatbot from '@/components/Chatbot';
+import CommunityChat from '@/components/CommunityChat';
 import GPACalculator from '@/components/GPACalculator';
 import ResourceCard from '@/components/semester/ResourceCard';
 import SemesterCard from '@/components/semester/SemesterCard';
@@ -272,7 +273,8 @@ export default function SemesterView() {
         <GPACalculator />
       </main>
 
-      {/* Chatbot */}
+      {/* Community Chat & Chatbot */}
+      <CommunityChat />
       <Chatbot />
     </div>
   );

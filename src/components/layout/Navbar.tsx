@@ -15,6 +15,7 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/sheet';
 import StreakBadge from '@/components/profile/StreakBadge';
 import { ThemeToggle } from '@/components/ThemeToggle';
+import OnlineUsersCounter from '@/components/OnlineUsersCounter';
 
 export default function Navbar() {
   const { user, signOut } = useAuth();
@@ -66,8 +67,11 @@ export default function Navbar() {
           ))}
         </div>
 
-        {/* Right side: Theme + Streak + User Menu */}
+        {/* Right side: Online Users + Theme + Streak + User Menu */}
         <div className="flex items-center gap-1 sm:gap-3">
+          {/* Online Users Counter */}
+          {user && <OnlineUsersCounter compact />}
+
           {/* Theme Toggle */}
           <ThemeToggle />
 

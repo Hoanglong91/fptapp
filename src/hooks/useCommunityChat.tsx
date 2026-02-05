@@ -9,9 +9,15 @@ interface ChatMessage {
   display_name: string;
   content: string;
   created_at: string;
+  major: string | null;
 }
 
-export function useCommunityChat() {
+interface UseCommunityyChatOptions {
+  major?: string | null; // null = general chat, string = specific major
+}
+
+export function useCommunityChat(options: UseCommunityyChatOptions = {}) {
+  const { major = null } = options;
   const { user } = useAuth();
   const { profile } = useProfile();
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -19,11 +25,19 @@ export function useCommunityChat() {
 
   const fetchMessages = useCallback(async () => {
     try {
-      const { data, error } = await supabase
+      let query = supabase
         .from('chat_messages')
         .select('*')
-        .order('created_at', { ascending: true })
-        .limit(100);
+        .order('created_at', { ascending: true });
+
+      // Filter by major: null = general, string = specific major
+      if (major === null) {
+        query = query.is('major', null);
+      } else {
+        query = query.eq('major', major);
+      }
+
+      const { data, error } = await query.limit(100);
 
       if (error) {
         console.error('Error fetching messages:', error);
@@ -35,7 +49,7 @@ export function useCommunityChat() {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [major]);
 
   const sendMessage = useCallback(async (content: string) => {
     if (!user || !content.trim()) return { error: 'Invalid message' };
@@ -49,6 +63,7 @@ export function useCommunityChat() {
           user_id: user.id,
           display_name: displayName,
           content: content.trim(),
+          major: major,
         });
 
       if (error) {
@@ -60,7 +75,7 @@ export function useCommunityChat() {
       console.error('Error sending message:', error);
       return { error: 'Failed to send message' };
     }
-  }, [user, profile]);
+  }, [user, profile, major]);
 
   const deleteMessage = useCallback(async (messageId: string) => {
     if (!user) return;
@@ -82,8 +97,10 @@ export function useCommunityChat() {
 
   // Subscribe to realtime updates
   useEffect(() => {
+    const channelName = major === null ? 'community-chat-general' : `community-chat-${major}`;
+    
     const channel = supabase
-      .channel('community-chat')
+      .channel(channelName)
       .on(
         'postgres_changes',
         {
@@ -93,7 +110,10 @@ export function useCommunityChat() {
         },
         (payload) => {
           const newMessage = payload.new as ChatMessage;
-          setMessages((prev) => [...prev, newMessage]);
+          // Only add message if it belongs to this chat (same major)
+          if (newMessage.major === major) {
+            setMessages((prev) => [...prev, newMessage]);
+          }
         }
       )
       .on(
@@ -113,7 +133,7 @@ export function useCommunityChat() {
     return () => {
       channel.unsubscribe();
     };
-  }, []);
+  }, [major]);
 
   return { messages, loading, sendMessage, deleteMessage, refetch: fetchMessages };
 }

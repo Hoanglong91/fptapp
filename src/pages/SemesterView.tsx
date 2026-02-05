@@ -274,7 +274,7 @@ export default function SemesterView() {
       </main>
 
       {/* Community Chat & Chatbot */}
-      <CommunityChat />
+      <CommunityChat major={majorId} />
       <Chatbot />
     </div>
   );

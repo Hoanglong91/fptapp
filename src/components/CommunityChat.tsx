@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageCircle, Send, X, Trash2, Users } from 'lucide-react';
+import { MessageCircle, Send, X, Trash2, Users, Globe } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -11,7 +11,25 @@ import { useOnlineUsers } from '@/hooks/useOnlineUsers';
 import { format, isToday, isYesterday, parseISO } from 'date-fns';
 import { vi } from 'date-fns/locale';
 
-export default function CommunityChat() {
+interface CommunityChatProps {
+  major?: string | null; // null = general chat, string = specific major
+}
+
+const majorNames: Record<string, string> = {
+  se: 'Software Engineering',
+  mm: 'Multimedia',
+  cn: 'Chinese Language',
+  mk: 'Marketing',
+};
+
+const majorColors: Record<string, string> = {
+  se: 'from-blue-500 to-cyan-500',
+  mm: 'from-purple-500 to-pink-500',
+  cn: 'from-red-500 to-orange-500',
+  mk: 'from-green-500 to-emerald-500',
+};
+
+export default function CommunityChat({ major = null }: CommunityChatProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [isSending, setIsSending] = useState(false);
@@ -19,8 +37,12 @@ export default function CommunityChat() {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const { user } = useAuth();
-  const { messages, loading, sendMessage, deleteMessage } = useCommunityChat();
+  const { messages, loading, sendMessage, deleteMessage } = useCommunityChat({ major });
   const { onlineCount } = useOnlineUsers();
+
+  const chatTitle = major ? majorNames[major] || major.toUpperCase() : 'Chat Cộng Đồng';
+  const gradientColor = major ? majorColors[major] || 'from-blue-500 to-cyan-500' : 'from-blue-500 to-cyan-500';
+  const ChatIcon = major ? Users : Globe;
 
   // Auto-scroll to bottom when new messages arrive
   useEffect(() => {
@@ -78,9 +100,9 @@ export default function CommunityChat() {
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
         onClick={() => setIsOpen(true)}
-        className={`fixed bottom-20 sm:bottom-6 left-4 sm:left-6 z-40 w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg flex items-center justify-center ${isOpen ? 'hidden' : ''}`}
+        className={`fixed bottom-20 sm:bottom-6 left-4 sm:left-6 z-40 w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-r ${gradientColor} text-white shadow-lg flex items-center justify-center ${isOpen ? 'hidden' : ''}`}
       >
-        <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6" />
+        <ChatIcon className="w-5 h-5 sm:w-6 sm:h-6" />
         {messages.length > 0 && (
           <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full text-xs flex items-center justify-center">
             {messages.length > 99 ? '99+' : messages.length}
@@ -99,13 +121,13 @@ export default function CommunityChat() {
             className="fixed bottom-0 left-0 sm:bottom-6 sm:left-6 z-50 w-full sm:w-96 h-[100dvh] sm:h-[500px] sm:max-h-[80vh] bg-background border border-border sm:rounded-2xl shadow-2xl flex flex-col overflow-hidden"
           >
             {/* Header */}
-            <div className="flex items-center justify-between p-4 border-b border-border bg-gradient-to-r from-blue-500/10 to-cyan-500/10">
+            <div className={`flex items-center justify-between p-4 border-b border-border bg-gradient-to-r ${gradientColor.replace('from-', 'from-').replace('to-', 'to-')}/10`}>
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 flex items-center justify-center">
-                  <Users className="w-5 h-5 text-white" />
+                <div className={`w-10 h-10 rounded-full bg-gradient-to-r ${gradientColor} flex items-center justify-center`}>
+                  <ChatIcon className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-foreground">Chat Cộng Đồng</h3>
+                  <h3 className="font-semibold text-foreground">{chatTitle}</h3>
                   <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                     <span className="relative flex h-2 w-2">
                       <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
@@ -207,7 +229,7 @@ export default function CommunityChat() {
                   size="icon"
                   onClick={handleSend}
                   disabled={!inputValue.trim() || isSending}
-                  className="rounded-full h-10 w-10 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600"
+                  className={`rounded-full h-10 w-10 bg-gradient-to-r ${gradientColor}`}
                 >
                   <Send className="w-4 h-4" />
                 </Button>

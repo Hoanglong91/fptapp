@@ -171,6 +171,7 @@ export default function MajorSelection() {
       </main>
 
       <CommunityChat />
+      {/* General chat for all majors */}
       <Chatbot />
     </div>
   );

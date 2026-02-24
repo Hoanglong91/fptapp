@@ -16,14 +16,25 @@ export interface CourseResource {
 export const courseData: Record<string, Record<number, CourseResource[]>> = {
   se: {
     1: [
-      { id: 1, title: 'C Programming Complete Tutorial', source: 'W3Schools', type: 'documents', rating: 4.8, url: 'https://www.w3schools.com/c/' },
-      { id: 2, title: 'Learn C Programming Basics', source: 'GeeksforGeeks', type: 'documents', rating: 4.7, url: 'https://www.geeksforgeeks.org/c-programming-language/' },
-      { id: 3, title: 'C Programming for Beginners', source: 'Programiz', type: 'documents', rating: 4.6, url: 'https://www.programiz.com/c-programming' },
-      { id: 4, title: 'C Full Course for Beginners', source: 'YouTube', type: 'videos', channel: 'freeCodeCamp', views: '15M', url: 'https://www.youtube.com/watch?v=KJgsSFOSQv0' },
-      { id: 5, title: 'C Programming Tutorial', source: 'YouTube', type: 'videos', channel: 'Bro Code', views: '5.2M', url: 'https://www.youtube.com/watch?v=87SH2Cn0s9A' },
-      { id: 6, title: 'Mathematics for Computer Science', source: 'MIT OCW', type: 'research', citations: 89, url: 'https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/' },
-      { id: 7, title: 'Calculus Basics', source: 'Khan Academy', type: 'documents', rating: 4.9, url: 'https://www.khanacademy.org/math/calculus-1' },
-      { id: 8, title: 'Linear Algebra Fundamentals', source: 'Khan Academy', type: 'documents', rating: 4.8, url: 'https://www.khanacademy.org/math/linear-algebra' },
+      // CSI106 - Introduction to Computer Science
+      { id: 1, title: 'CSI106 - Introduction to Computer Science', source: 'Harvard CS50', type: 'documents', rating: 4.9, url: 'https://cs50.harvard.edu/x/' },
+      { id: 2, title: 'CSI106 - Intro to CS Complete Guide', source: 'GeeksforGeeks', type: 'documents', rating: 4.7, url: 'https://www.geeksforgeeks.org/introduction-to-computer-science/' },
+      { id: 3, title: 'CSI106 - CS50 Full Course', source: 'YouTube', type: 'videos', channel: 'freeCodeCamp', views: '20M', url: 'https://www.youtube.com/watch?v=8mAITcNt710' },
+      // MAE101 - Mathematics for Engineering
+      { id: 4, title: 'MAE101 - Mathematics for Engineering', source: 'Khan Academy', type: 'documents', rating: 4.9, url: 'https://www.khanacademy.org/math/calculus-1' },
+      { id: 5, title: 'MAE101 - Linear Algebra Fundamentals', source: 'Khan Academy', type: 'documents', rating: 4.8, url: 'https://www.khanacademy.org/math/linear-algebra' },
+      { id: 6, title: 'MAE101 - Engineering Math Full Course', source: 'YouTube', type: 'videos', channel: 'Professor Leonard', views: '8M', url: 'https://www.youtube.com/watch?v=fYyARMqiaag' },
+      { id: 7, title: 'MAE101 - Mathematics for Computer Science', source: 'MIT OCW', type: 'research', citations: 89, url: 'https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/' },
+      // PRF192 - Programming Fundamentals
+      { id: 8, title: 'PRF192 - C Programming Complete Tutorial', source: 'W3Schools', type: 'documents', rating: 4.8, url: 'https://www.w3schools.com/c/' },
+      { id: 9, title: 'PRF192 - Learn C Programming', source: 'Programiz', type: 'documents', rating: 4.6, url: 'https://www.programiz.com/c-programming' },
+      { id: 10, title: 'PRF192 - C Full Course for Beginners', source: 'YouTube', type: 'videos', channel: 'freeCodeCamp', views: '15M', url: 'https://www.youtube.com/watch?v=KJgsSFOSQv0' },
+      { id: 11, title: 'PRF192 - C Programming Tutorial', source: 'YouTube', type: 'videos', channel: 'Bro Code', views: '5.2M', url: 'https://www.youtube.com/watch?v=87SH2Cn0s9A' },
+      // CEA201 - Computer Organization and Architecture
+      { id: 12, title: 'CEA201 - Computer Organization & Architecture', source: 'GeeksforGeeks', type: 'documents', rating: 4.7, url: 'https://www.geeksforgeeks.org/computer-organization-and-architecture-tutorials/' },
+      { id: 13, title: 'CEA201 - Computer Architecture', source: 'Neso Academy', type: 'documents', rating: 4.6, url: 'https://www.nesoacademy.org/cs/03-computer-organization-and-architecture' },
+      { id: 14, title: 'CEA201 - Computer Architecture Full Course', source: 'YouTube', type: 'videos', channel: 'Neso Academy', views: '4.5M', url: 'https://www.youtube.com/watch?v=Ol8D69VKX2k' },
+      { id: 15, title: 'CEA201 - Computer Organization Research', source: 'MIT OCW', type: 'research', citations: 120, url: 'https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/' },
     ],
     2: [
       { id: 1, title: 'Java OOP Complete Tutorial', source: 'W3Schools', type: 'documents', rating: 4.7, url: 'https://www.w3schools.com/java/java_oop.asp' },

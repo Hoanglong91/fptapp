@@ -16,87 +16,162 @@ export interface CourseResource {
 export const courseData: Record<string, Record<number, CourseResource[]>> = {
   se: {
     1: [
-      // CSI106 - Introduction to Computer Science
-      { id: 1, title: 'CSI106 - Introduction to Computer Science', source: 'Harvard CS50', type: 'documents', rating: 4.9, url: 'https://cs50.harvard.edu/x/' },
-      { id: 2, title: 'CSI106 - Intro to CS Complete Guide', source: 'GeeksforGeeks', type: 'documents', rating: 4.7, url: 'https://www.geeksforgeeks.org/introduction-to-computer-science/' },
-      { id: 3, title: 'CSI106 - CS50 Full Course', source: 'YouTube', type: 'videos', channel: 'freeCodeCamp', views: '20M', url: 'https://www.youtube.com/watch?v=8mAITcNt710' },
-      // MAE101 - Mathematics for Engineering
-      { id: 4, title: 'MAE101 - Mathematics for Engineering', source: 'Khan Academy', type: 'documents', rating: 4.9, url: 'https://www.khanacademy.org/math/calculus-1' },
-      { id: 5, title: 'MAE101 - Linear Algebra Fundamentals', source: 'Khan Academy', type: 'documents', rating: 4.8, url: 'https://www.khanacademy.org/math/linear-algebra' },
-      { id: 6, title: 'MAE101 - Engineering Math Full Course', source: 'YouTube', type: 'videos', channel: 'Professor Leonard', views: '8M', url: 'https://www.youtube.com/watch?v=fYyARMqiaag' },
-      { id: 7, title: 'MAE101 - Mathematics for Computer Science', source: 'MIT OCW', type: 'research', citations: 89, url: 'https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/' },
-      // PRF192 - Programming Fundamentals
-      { id: 8, title: 'PRF192 - C Programming Complete Tutorial', source: 'W3Schools', type: 'documents', rating: 4.8, url: 'https://www.w3schools.com/c/' },
-      { id: 9, title: 'PRF192 - Learn C Programming', source: 'Programiz', type: 'documents', rating: 4.6, url: 'https://www.programiz.com/c-programming' },
-      { id: 10, title: 'PRF192 - C Full Course for Beginners', source: 'YouTube', type: 'videos', channel: 'freeCodeCamp', views: '15M', url: 'https://www.youtube.com/watch?v=KJgsSFOSQv0' },
-      { id: 11, title: 'PRF192 - C Programming Tutorial', source: 'YouTube', type: 'videos', channel: 'Bro Code', views: '5.2M', url: 'https://www.youtube.com/watch?v=87SH2Cn0s9A' },
-      // CEA201 - Computer Organization and Architecture
-      { id: 12, title: 'CEA201 - Computer Organization & Architecture', source: 'GeeksforGeeks', type: 'documents', rating: 4.7, url: 'https://www.geeksforgeeks.org/computer-organization-and-architecture-tutorials/' },
-      { id: 13, title: 'CEA201 - Computer Architecture', source: 'Neso Academy', type: 'documents', rating: 4.6, url: 'https://www.nesoacademy.org/cs/03-computer-organization-and-architecture' },
-      { id: 14, title: 'CEA201 - Computer Architecture Full Course', source: 'YouTube', type: 'videos', channel: 'Neso Academy', views: '4.5M', url: 'https://www.youtube.com/watch?v=Ol8D69VKX2k' },
-      { id: 15, title: 'CEA201 - Computer Organization Research', source: 'MIT OCW', type: 'research', citations: 120, url: 'https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/' },
+      // CSI106 – Introduction to Computer Science
+      { id: 1, title: 'CSI106 – Intro to Computer Science (CS50)', source: 'Harvard CS50', type: 'documents', rating: 4.9, url: 'https://cs50.harvard.edu/x/' },
+      { id: 2, title: 'CSI106 – Computer Science Basics', source: 'GeeksforGeeks', type: 'documents', rating: 4.7, url: 'https://www.geeksforgeeks.org/introduction-to-computer-science/' },
+      { id: 3, title: 'CSI106 – CS50 Full Course 2024', source: 'YouTube', type: 'videos', channel: 'freeCodeCamp', views: '20M', url: 'https://www.youtube.com/watch?v=8mAITcNt710' },
+      // MAE101 – Mathematics for Engineering
+      { id: 4, title: 'MAE101 – Calculus 1', source: 'Khan Academy', type: 'documents', rating: 4.9, url: 'https://www.khanacademy.org/math/calculus-1' },
+      { id: 5, title: 'MAE101 – Linear Algebra', source: 'Khan Academy', type: 'documents', rating: 4.8, url: 'https://www.khanacademy.org/math/linear-algebra' },
+      { id: 6, title: 'MAE101 – Engineering Math Full Course', source: 'YouTube', type: 'videos', channel: 'Professor Leonard', views: '8M', url: 'https://www.youtube.com/watch?v=fYyARMqiaag' },
+      { id: 7, title: 'MAE101 – Mathematics for CS', source: 'MIT OCW', type: 'research', citations: 89, url: 'https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/' },
+      // PRF192 – Programming Fundamentals
+      { id: 8, title: 'PRF192 – C Programming Tutorial', source: 'W3Schools', type: 'documents', rating: 4.8, url: 'https://www.w3schools.com/c/' },
+      { id: 9, title: 'PRF192 – Learn C Programming', source: 'Programiz', type: 'documents', rating: 4.6, url: 'https://www.programiz.com/c-programming' },
+      { id: 10, title: 'PRF192 – C Full Course', source: 'YouTube', type: 'videos', channel: 'freeCodeCamp', views: '15M', url: 'https://www.youtube.com/watch?v=KJgsSFOSQv0' },
+      { id: 11, title: 'PRF192 – C Programming Tutorial', source: 'YouTube', type: 'videos', channel: 'Bro Code', views: '5.2M', url: 'https://www.youtube.com/watch?v=87SH2Cn0s9A' },
+      // CEA201 – Computer Organization and Architecture
+      { id: 12, title: 'CEA201 – Computer Organization', source: 'GeeksforGeeks', type: 'documents', rating: 4.7, url: 'https://www.geeksforgeeks.org/computer-organization-and-architecture-tutorials/' },
+      { id: 13, title: 'CEA201 – Computer Architecture Course', source: 'YouTube', type: 'videos', channel: 'Neso Academy', views: '4.5M', url: 'https://www.youtube.com/watch?v=Ol8D69VKX2k' },
+      { id: 14, title: 'CEA201 – Computation Structures', source: 'MIT OCW', type: 'research', citations: 120, url: 'https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/' },
+      // SSL101c – Academic Skills for University Success
+      { id: 15, title: 'SSL101c – Study Skills Guide', source: 'Coursera', type: 'documents', rating: 4.7, url: 'https://www.coursera.org/learn/learning-how-to-learn' },
+      { id: 16, title: 'SSL101c – Academic Writing Basics', source: 'YouTube', type: 'videos', channel: 'Scribbr', views: '2.1M', url: 'https://www.youtube.com/watch?v=ue3mANux-3E' },
     ],
     2: [
-      { id: 1, title: 'Java OOP Complete Tutorial', source: 'W3Schools', type: 'documents', rating: 4.7, url: 'https://www.w3schools.com/java/java_oop.asp' },
-      { id: 2, title: 'Data Structures in Java', source: 'GeeksforGeeks', type: 'documents', rating: 4.9, url: 'https://www.geeksforgeeks.org/data-structures/' },
-      { id: 3, title: 'Java Tutorial for Beginners', source: 'Programiz', type: 'documents', rating: 4.7, url: 'https://www.programiz.com/java-programming' },
-      { id: 4, title: 'Java Full Course', source: 'YouTube', type: 'videos', channel: 'Programming with Mosh', views: '8.5M', url: 'https://www.youtube.com/watch?v=eIrMbAQSU34' },
-      { id: 5, title: 'Data Structures Easy to Advanced', source: 'YouTube', type: 'videos', channel: 'freeCodeCamp', views: '4.2M', url: 'https://www.youtube.com/watch?v=RBSGKlAvoiM' },
-      { id: 6, title: 'Discrete Mathematics', source: 'Khan Academy', type: 'documents', rating: 4.5, url: 'https://www.khanacademy.org/computing/computer-science/algorithms' },
-      { id: 7, title: 'Java Algorithms Repository', source: 'GitHub', type: 'research', citations: 156, url: 'https://github.com/TheAlgorithms/Java' },
+      // MAD101 – Discrete Mathematics
+      { id: 1, title: 'MAD101 – Discrete Mathematics', source: 'Khan Academy', type: 'documents', rating: 4.8, url: 'https://www.khanacademy.org/computing/computer-science/algorithms' },
+      { id: 2, title: 'MAD101 – Discrete Math Tutorial', source: 'GeeksforGeeks', type: 'documents', rating: 4.7, url: 'https://www.geeksforgeeks.org/discrete-mathematics-tutorial/' },
+      { id: 3, title: 'MAD101 – Discrete Math Full Course', source: 'YouTube', type: 'videos', channel: 'TrevTutor', views: '3.5M', url: 'https://www.youtube.com/watch?v=rdXw7Ps9vxc' },
+      // OSG202 – Operating System
+      { id: 4, title: 'OSG202 – Operating Systems', source: 'GeeksforGeeks', type: 'documents', rating: 4.6, url: 'https://www.geeksforgeeks.org/operating-systems/' },
+      { id: 5, title: 'OSG202 – OS Concepts', source: 'YouTube', type: 'videos', channel: 'Neso Academy', views: '3.1M', url: 'https://www.youtube.com/watch?v=vBURTt97EkA' },
+      { id: 6, title: 'OSG202 – Operating Systems Course', source: 'MIT OCW', type: 'research', citations: 145, url: 'https://ocw.mit.edu/courses/6-828-operating-system-engineering-fall-2012/' },
+      // PRO192 – Object-Oriented Programming
+      { id: 7, title: 'PRO192 – Java OOP Tutorial', source: 'W3Schools', type: 'documents', rating: 4.7, url: 'https://www.w3schools.com/java/java_oop.asp' },
+      { id: 8, title: 'PRO192 – Java Programming', source: 'Programiz', type: 'documents', rating: 4.7, url: 'https://www.programiz.com/java-programming' },
+      { id: 9, title: 'PRO192 – Java Full Course', source: 'YouTube', type: 'videos', channel: 'Programming with Mosh', views: '8.5M', url: 'https://www.youtube.com/watch?v=eIrMbAQSU34' },
+      // WED201c – Web Design
+      { id: 10, title: 'WED201c – HTML CSS Guide', source: 'W3Schools', type: 'documents', rating: 4.8, url: 'https://www.w3schools.com/html/' },
+      { id: 11, title: 'WED201c – Responsive Web Design', source: 'freeCodeCamp', type: 'documents', rating: 4.9, url: 'https://www.freecodecamp.org/learn/2022/responsive-web-design/' },
+      { id: 12, title: 'WED201c – Web Design Full Course', source: 'YouTube', type: 'videos', channel: 'Traversy Media', views: '6.8M', url: 'https://www.youtube.com/watch?v=hdI2bqOjy3c' },
+      // NWC204 – Computer Networking
+      { id: 13, title: 'NWC204 – Computer Networks', source: 'GeeksforGeeks', type: 'documents', rating: 4.6, url: 'https://www.geeksforgeeks.org/computer-network-tutorials/' },
+      { id: 14, title: 'NWC204 – Networking Full Course', source: 'YouTube', type: 'videos', channel: 'NetworkChuck', views: '5.6M', url: 'https://www.youtube.com/watch?v=qiQR5rTSshw' },
+      { id: 15, title: 'NWC204 – Computer Networks Course', source: 'Stanford', type: 'research', citations: 178, url: 'https://www.scs.stanford.edu/10au-cs144/' },
     ],
     3: [
-      { id: 1, title: 'SQL Complete Tutorial', source: 'W3Schools', type: 'documents', rating: 4.8, url: 'https://www.w3schools.com/sql/' },
-      { id: 2, title: 'HTML CSS JavaScript Guide', source: 'W3Schools', type: 'documents', rating: 4.7, url: 'https://www.w3schools.com/html/' },
-      { id: 3, title: 'JavaScript Modern Tutorial', source: 'JavaScript.info', type: 'documents', rating: 4.9, url: 'https://javascript.info/' },
-      { id: 4, title: 'CSS Complete Guide', source: 'MDN Web Docs', type: 'documents', rating: 4.8, url: 'https://developer.mozilla.org/en-US/docs/Web/CSS' },
-      { id: 5, title: 'SQL Full Course 2024', source: 'YouTube', type: 'videos', channel: 'freeCodeCamp', views: '12M', url: 'https://www.youtube.com/watch?v=HXV3zeQKqGY' },
-      { id: 6, title: 'JavaScript Tutorial', source: 'YouTube', type: 'videos', channel: 'Traversy Media', views: '6.8M', url: 'https://www.youtube.com/watch?v=hdI2bqOjy3c' },
-      { id: 7, title: 'Database Design Guide', source: 'GeeksforGeeks', type: 'research', citations: 78, url: 'https://www.geeksforgeeks.org/database-management-system/' },
-      { id: 8, title: 'Web Development Roadmap', source: 'GitHub', type: 'research', citations: 245, url: 'https://github.com/kamranahmedse/developer-roadmap' },
+      // JPD113 – Elementary Japanese 1-A1.1
+      { id: 1, title: 'JPD113 – Japanese for Beginners', source: 'NHK World', type: 'documents', rating: 4.8, url: 'https://www.nhk.or.jp/lesson/english/' },
+      { id: 2, title: 'JPD113 – Learn Hiragana & Katakana', source: 'YouTube', type: 'videos', channel: 'JapanesePod101', views: '8.2M', url: 'https://www.youtube.com/watch?v=6p9Il_j0zjc' },
+      // MAS291 – Statistics & Probability
+      { id: 3, title: 'MAS291 – Statistics & Probability', source: 'Khan Academy', type: 'documents', rating: 4.9, url: 'https://www.khanacademy.org/math/statistics-probability' },
+      { id: 4, title: 'MAS291 – Statistics Full Course', source: 'YouTube', type: 'videos', channel: 'freeCodeCamp', views: '4.2M', url: 'https://www.youtube.com/watch?v=xxpc-HPKN28' },
+      // DBI202 – Database Systems
+      { id: 5, title: 'DBI202 – SQL Tutorial', source: 'W3Schools', type: 'documents', rating: 4.8, url: 'https://www.w3schools.com/sql/' },
+      { id: 6, title: 'DBI202 – Database Systems', source: 'GeeksforGeeks', type: 'documents', rating: 4.7, url: 'https://www.geeksforgeeks.org/database-management-system/' },
+      { id: 7, title: 'DBI202 – SQL Full Course', source: 'YouTube', type: 'videos', channel: 'freeCodeCamp', views: '12M', url: 'https://www.youtube.com/watch?v=HXV3zeQKqGY' },
+      // CSD201 – Data Structures and Algorithm
+      { id: 8, title: 'CSD201 – Data Structures', source: 'GeeksforGeeks', type: 'documents', rating: 4.9, url: 'https://www.geeksforgeeks.org/data-structures/' },
+      { id: 9, title: 'CSD201 – DSA Full Course', source: 'YouTube', type: 'videos', channel: 'freeCodeCamp', views: '4.2M', url: 'https://www.youtube.com/watch?v=RBSGKlAvoiM' },
+      { id: 10, title: 'CSD201 – Algorithms Repository', source: 'GitHub', type: 'research', citations: 156, url: 'https://github.com/TheAlgorithms/Java' },
+      // LAB211 – OOP with Java Lab
+      { id: 11, title: 'LAB211 – Java OOP Practice', source: 'Programiz', type: 'documents', rating: 4.7, url: 'https://www.programiz.com/java-programming/examples' },
+      { id: 12, title: 'LAB211 – Java Projects for Beginners', source: 'YouTube', type: 'videos', channel: 'Coding with John', views: '1.8M', url: 'https://www.youtube.com/watch?v=GoXwIVyNvX0' },
     ],
     4: [
-      { id: 1, title: 'Software Engineering Basics', source: 'GeeksforGeeks', type: 'documents', rating: 4.7, url: 'https://www.geeksforgeeks.org/software-engineering/' },
-      { id: 2, title: 'Operating Systems Tutorial', source: 'GeeksforGeeks', type: 'documents', rating: 4.6, url: 'https://www.geeksforgeeks.org/operating-systems/' },
-      { id: 3, title: 'React Documentation', source: 'React.dev', type: 'documents', rating: 4.9, url: 'https://react.dev/learn' },
-      { id: 4, title: 'Computer Networks', source: 'GeeksforGeeks', type: 'documents', rating: 4.6, url: 'https://www.geeksforgeeks.org/computer-network-tutorials/' },
-      { id: 5, title: 'React JS Full Tutorial', source: 'YouTube', type: 'videos', channel: 'Traversy Media', views: '4.2M', url: 'https://www.youtube.com/watch?v=w7ejDZ8SWv8' },
-      { id: 6, title: 'Operating Systems Course', source: 'YouTube', type: 'videos', channel: 'Neso Academy', views: '3.1M', url: 'https://www.youtube.com/watch?v=vBURTt97EkA' },
-      { id: 7, title: 'Software Engineering Research', source: 'IEEE', type: 'research', citations: 134, url: 'https://www.computer.org/csdl/magazine/so' },
+      // JPD123 – Japanese Elementary 1-A1.2
+      { id: 1, title: 'JPD123 – Japanese A1.2 Lessons', source: 'NHK World', type: 'documents', rating: 4.8, url: 'https://www.nhk.or.jp/lesson/english/' },
+      { id: 2, title: 'JPD123 – JLPT N5 Preparation', source: 'YouTube', type: 'videos', channel: 'JapanesePod101', views: '3.5M', url: 'https://www.youtube.com/watch?v=csE3sBNIb7E' },
+      // IOT102 – Internet of Things
+      { id: 3, title: 'IOT102 – IoT Fundamentals', source: 'GeeksforGeeks', type: 'documents', rating: 4.6, url: 'https://www.geeksforgeeks.org/introduction-to-internet-of-things-iot/' },
+      { id: 4, title: 'IOT102 – IoT Full Course', source: 'YouTube', type: 'videos', channel: 'Simplilearn', views: '2.3M', url: 'https://www.youtube.com/watch?v=LlhmzVL5bm8' },
+      // PRJ301 – Java Web Application Development
+      { id: 5, title: 'PRJ301 – Java Servlets & JSP', source: 'GeeksforGeeks', type: 'documents', rating: 4.7, url: 'https://www.geeksforgeeks.org/introduction-java-servlets/' },
+      { id: 6, title: 'PRJ301 – Spring Boot Guide', source: 'Spring.io', type: 'documents', rating: 4.9, url: 'https://spring.io/guides' },
+      { id: 7, title: 'PRJ301 – Java Web App Full Course', source: 'YouTube', type: 'videos', channel: 'Amigoscode', views: '4.1M', url: 'https://www.youtube.com/watch?v=9SGDpanrc8U' },
+      // SSG104 – Communication and In-Group Working Skills
+      { id: 8, title: 'SSG104 – Teamwork & Communication', source: 'Coursera', type: 'documents', rating: 4.7, url: 'https://www.coursera.org/learn/teamwork-skills' },
+      { id: 9, title: 'SSG104 – Communication Skills', source: 'YouTube', type: 'videos', channel: 'TED', views: '6.5M', url: 'https://www.youtube.com/watch?v=eIho2S0ZahI' },
+      // SWE202c – Introduction to Software Engineering
+      { id: 10, title: 'SWE202c – Software Engineering', source: 'GeeksforGeeks', type: 'documents', rating: 4.7, url: 'https://www.geeksforgeeks.org/software-engineering/' },
+      { id: 11, title: 'SWE202c – SE Full Course', source: 'YouTube', type: 'videos', channel: 'freeCodeCamp', views: '1.9M', url: 'https://www.youtube.com/watch?v=uoMOA5fgTCA' },
+      { id: 12, title: 'SWE202c – SE Research', source: 'IEEE', type: 'research', citations: 134, url: 'https://www.computer.org/csdl/magazine/so' },
     ],
     5: [
-      { id: 1, title: 'Android Development Guide', source: 'Android Docs', type: 'documents', rating: 4.8, url: 'https://developer.android.com/guide' },
-      { id: 2, title: 'Machine Learning Basics', source: 'GeeksforGeeks', type: 'documents', rating: 4.9, url: 'https://www.geeksforgeeks.org/machine-learning/' },
-      { id: 3, title: 'Flutter Documentation', source: 'Flutter.dev', type: 'documents', rating: 4.8, url: 'https://docs.flutter.dev/' },
-      { id: 4, title: 'Python for Data Science', source: 'W3Schools', type: 'documents', rating: 4.7, url: 'https://www.w3schools.com/python/' },
-      { id: 5, title: 'Flutter Full Course', source: 'YouTube', type: 'videos', channel: 'The Net Ninja', views: '2.8M', url: 'https://www.youtube.com/watch?v=1ukSR1GRtMU' },
-      { id: 6, title: 'Machine Learning Course', source: 'YouTube', type: 'videos', channel: 'freeCodeCamp', views: '7.5M', url: 'https://www.youtube.com/watch?v=NWONeJKn6kc' },
-      { id: 7, title: 'ML Stanford Course', source: 'Coursera', type: 'research', citations: 342, url: 'https://www.coursera.org/learn/machine-learning' },
+      // FER202 – Front-End Web Development with React
+      { id: 1, title: 'FER202 – React Documentation', source: 'React.dev', type: 'documents', rating: 4.9, url: 'https://react.dev/learn' },
+      { id: 2, title: 'FER202 – React Tutorial', source: 'W3Schools', type: 'documents', rating: 4.7, url: 'https://www.w3schools.com/react/' },
+      { id: 3, title: 'FER202 – React Full Course', source: 'YouTube', type: 'videos', channel: 'freeCodeCamp', views: '7.5M', url: 'https://www.youtube.com/watch?v=bMknfKXIFA8' },
+      // WDU203c – UI/UX Design
+      { id: 4, title: 'WDU203c – UI/UX Design Guide', source: 'Google Design', type: 'documents', rating: 4.8, url: 'https://design.google/' },
+      { id: 5, title: 'WDU203c – Figma Tutorial', source: 'Figma', type: 'documents', rating: 4.9, url: 'https://help.figma.com/hc/en-us' },
+      { id: 6, title: 'WDU203c – UI/UX Full Course', source: 'YouTube', type: 'videos', channel: 'DesignCourse', views: '3.3M', url: 'https://www.youtube.com/watch?v=FTFaQWZBqQ8' },
+      // SWP391 – Software Development Project
+      { id: 7, title: 'SWP391 – Agile Project Guide', source: 'Atlassian', type: 'documents', rating: 4.8, url: 'https://www.atlassian.com/agile' },
+      { id: 8, title: 'SWP391 – Full Stack Project Course', source: 'YouTube', type: 'videos', channel: 'Traversy Media', views: '2.1M', url: 'https://www.youtube.com/watch?v=w7ejDZ8SWv8' },
+      // SWR302 – Software Requirement
+      { id: 9, title: 'SWR302 – Software Requirements', source: 'GeeksforGeeks', type: 'documents', rating: 4.6, url: 'https://www.geeksforgeeks.org/software-engineering-requirements-engineering-process/' },
+      { id: 10, title: 'SWR302 – Requirements Engineering', source: 'YouTube', type: 'videos', channel: 'Arden University', views: '450K', url: 'https://www.youtube.com/watch?v=VqEyB9sFbIQ' },
+      // SWT301 – Software Testing
+      { id: 11, title: 'SWT301 – Software Testing Guide', source: 'GeeksforGeeks', type: 'documents', rating: 4.7, url: 'https://www.geeksforgeeks.org/software-testing-tutorial/' },
+      { id: 12, title: 'SWT301 – Software Testing Course', source: 'YouTube', type: 'videos', channel: 'freeCodeCamp', views: '1.6M', url: 'https://www.youtube.com/watch?v=u6QfIXgjwGQ' },
+      { id: 13, title: 'SWT301 – Testing Best Practices', source: 'Martin Fowler', type: 'research', citations: 210, url: 'https://martinfowler.com/testing/' },
     ],
     7: [
-      { id: 1, title: 'AWS Cloud Essentials', source: 'AWS Docs', type: 'documents', rating: 4.8, url: 'https://aws.amazon.com/getting-started/' },
-      { id: 2, title: 'Docker Documentation', source: 'Docker Docs', type: 'documents', rating: 4.7, url: 'https://docs.docker.com/' },
-      { id: 3, title: 'Kubernetes Guide', source: 'Kubernetes.io', type: 'documents', rating: 4.8, url: 'https://kubernetes.io/docs/home/' },
-      { id: 4, title: 'Microservices Architecture', source: 'Microsoft Docs', type: 'documents', rating: 4.6, url: 'https://learn.microsoft.com/en-us/azure/architecture/guide/architecture-styles/microservices' },
-      { id: 5, title: 'DevOps Full Course', source: 'YouTube', type: 'videos', channel: 'TechWorld with Nana', views: '3.1M', url: 'https://www.youtube.com/watch?v=j5Zsa_eOXeY' },
-      { id: 6, title: 'Docker Tutorial', source: 'YouTube', type: 'videos', channel: 'Fireship', views: '2.4M', url: 'https://www.youtube.com/watch?v=gAkwW2tuIqE' },
-      { id: 7, title: 'System Design Primer', source: 'GitHub', type: 'research', citations: 456, url: 'https://github.com/donnemartin/system-design-primer' },
+      // SWD392 – Software Architecture and Design
+      { id: 1, title: 'SWD392 – Software Architecture', source: 'Microsoft Docs', type: 'documents', rating: 4.8, url: 'https://learn.microsoft.com/en-us/azure/architecture/guide/' },
+      { id: 2, title: 'SWD392 – Design Patterns', source: 'Refactoring Guru', type: 'documents', rating: 4.9, url: 'https://refactoring.guru/design-patterns' },
+      { id: 3, title: 'SWD392 – System Design Primer', source: 'GitHub', type: 'research', citations: 456, url: 'https://github.com/donnemartin/system-design-primer' },
+      { id: 4, title: 'SWD392 – System Design Course', source: 'YouTube', type: 'videos', channel: 'Gaurav Sen', views: '2.5M', url: 'https://www.youtube.com/watch?v=xpDnVSmNFX0' },
+      // EXE101 – Experiential Entrepreneurship 1
+      { id: 5, title: 'EXE101 – Startup & Entrepreneurship', source: 'Coursera', type: 'documents', rating: 4.7, url: 'https://www.coursera.org/learn/wharton-entrepreneurship' },
+      { id: 6, title: 'EXE101 – How to Start a Startup', source: 'YouTube', type: 'videos', channel: 'Y Combinator', views: '3.8M', url: 'https://www.youtube.com/watch?v=CBYhVcO4WgI' },
+      // PMG201c – Project Management
+      { id: 7, title: 'PMG201c – Project Management Guide', source: 'Atlassian', type: 'documents', rating: 4.8, url: 'https://www.atlassian.com/work-management/project-management' },
+      { id: 8, title: 'PMG201c – PMP Certification Course', source: 'YouTube', type: 'videos', channel: 'Simplilearn', views: '2.9M', url: 'https://www.youtube.com/watch?v=uWPIsaYpY7U' },
+      // SE_COM – Combo Subjects
+      { id: 9, title: 'SE Combo – Cloud Computing (AWS)', source: 'AWS Docs', type: 'documents', rating: 4.8, url: 'https://aws.amazon.com/getting-started/' },
+      { id: 10, title: 'SE Combo – Docker & Kubernetes', source: 'Docker Docs', type: 'documents', rating: 4.7, url: 'https://docs.docker.com/' },
+      { id: 11, title: 'SE Combo – DevOps Full Course', source: 'YouTube', type: 'videos', channel: 'TechWorld with Nana', views: '3.1M', url: 'https://www.youtube.com/watch?v=j5Zsa_eOXeY' },
+      { id: 12, title: 'SE Combo – Microservices', source: 'Microsoft Docs', type: 'research', citations: 189, url: 'https://learn.microsoft.com/en-us/azure/architecture/guide/architecture-styles/microservices' },
     ],
     8: [
-      { id: 1, title: 'Capstone Project Ideas', source: 'GitHub', type: 'documents', rating: 4.9, url: 'https://github.com/florinpop17/app-ideas' },
-      { id: 2, title: 'Clean Code Guide', source: 'GitHub', type: 'documents', rating: 4.8, url: 'https://github.com/ryanmcdermott/clean-code-javascript' },
-      { id: 3, title: 'Project Management with Agile', source: 'Atlassian', type: 'documents', rating: 4.7, url: 'https://www.atlassian.com/agile' },
-      { id: 4, title: 'System Design Interview', source: 'YouTube', type: 'videos', channel: 'Gaurav Sen', views: '2.5M', url: 'https://www.youtube.com/watch?v=xpDnVSmNFX0' },
-      { id: 5, title: 'Building Scalable Apps', source: 'YouTube', type: 'videos', channel: 'Tech With Tim', views: '890K', url: 'https://www.youtube.com/watch?v=erEgovG9WBs' },
-      { id: 6, title: 'Agile Methodology Research', source: 'Atlassian', type: 'research', citations: 189, url: 'https://www.atlassian.com/agile/manifesto' },
+      // ITE302c – Ethics in IT
+      { id: 1, title: 'ITE302c – IT Ethics Guide', source: 'ACM', type: 'documents', rating: 4.6, url: 'https://www.acm.org/code-of-ethics' },
+      { id: 2, title: 'ITE302c – Ethics in Technology', source: 'YouTube', type: 'videos', channel: 'CrashCourse', views: '1.8M', url: 'https://www.youtube.com/watch?v=AUhLPCh0JuI' },
+      // EXE201 – Experiential Entrepreneurship 2
+      { id: 3, title: 'EXE201 – Business Model Canvas', source: 'Strategyzer', type: 'documents', rating: 4.8, url: 'https://www.strategyzer.com/library/the-business-model-canvas' },
+      { id: 4, title: 'EXE201 – Startup Pitching', source: 'YouTube', type: 'videos', channel: 'Y Combinator', views: '2.4M', url: 'https://www.youtube.com/watch?v=17XZGUX_9iM' },
+      // MLN111 – Philosophy of Marxism–Leninism
+      { id: 5, title: 'MLN111 – Triết học Mác-Lênin', source: 'Tài liệu FPT', type: 'documents', rating: 4.5, url: 'https://daihoc.fpt.edu.vn/' },
+      // MLN122 – Political Economics of Marxism–Leninism
+      { id: 6, title: 'MLN122 – Kinh tế Chính trị Mác-Lênin', source: 'Tài liệu FPT', type: 'documents', rating: 4.5, url: 'https://daihoc.fpt.edu.vn/' },
+      // PRM393 – Mobile Programming
+      { id: 7, title: 'PRM393 – Android Development', source: 'Android Docs', type: 'documents', rating: 4.8, url: 'https://developer.android.com/guide' },
+      { id: 8, title: 'PRM393 – React Native Guide', source: 'React Native', type: 'documents', rating: 4.7, url: 'https://reactnative.dev/docs/getting-started' },
+      { id: 9, title: 'PRM393 – Android Full Course', source: 'YouTube', type: 'videos', channel: 'freeCodeCamp', views: '3.8M', url: 'https://www.youtube.com/watch?v=fis26HvvDII' },
+      { id: 10, title: 'PRM393 – Flutter Full Course', source: 'YouTube', type: 'videos', channel: 'The Net Ninja', views: '2.8M', url: 'https://www.youtube.com/watch?v=1ukSR1GRtMU' },
+      // SE_COM*4
+      { id: 11, title: 'SE Combo – Machine Learning', source: 'GeeksforGeeks', type: 'documents', rating: 4.9, url: 'https://www.geeksforgeeks.org/machine-learning/' },
+      { id: 12, title: 'SE Combo – ML Course', source: 'YouTube', type: 'videos', channel: 'freeCodeCamp', views: '7.5M', url: 'https://www.youtube.com/watch?v=NWONeJKn6kc' },
     ],
     9: [
-      { id: 1, title: 'Technical Writing Guide', source: 'Google Developers', type: 'documents', rating: 4.8, url: 'https://developers.google.com/tech-writing' },
-      { id: 2, title: 'Resume & Portfolio Tips', source: 'Indeed', type: 'documents', rating: 4.7, url: 'https://www.indeed.com/career-advice/resumes-cover-letters' },
-      { id: 3, title: 'Coding Interview Prep', source: 'LeetCode', type: 'documents', rating: 4.9, url: 'https://leetcode.com/explore/' },
-      { id: 4, title: 'Technical Interview Prep', source: 'YouTube', type: 'videos', channel: 'NeetCode', views: '1.8M', url: 'https://www.youtube.com/watch?v=aa2nLrBpFxE' },
-      { id: 5, title: 'How to Get Hired', source: 'YouTube', type: 'videos', channel: 'Joma Tech', views: '3.2M', url: 'https://www.youtube.com/watch?v=YJZCUhxNCv8' },
-      { id: 6, title: 'Coding Interview University', source: 'GitHub', type: 'research', citations: 289, url: 'https://github.com/jwasham/coding-interview-university' },
+      // VNR202 – History of Vietnam Communist Party
+      { id: 1, title: 'VNR202 – Lịch sử Đảng CSVN', source: 'Tài liệu FPT', type: 'documents', rating: 4.5, url: 'https://daihoc.fpt.edu.vn/' },
+      // SEP490 – SE Capstone Project
+      { id: 2, title: 'SEP490 – Capstone Project Ideas', source: 'GitHub', type: 'documents', rating: 4.9, url: 'https://github.com/florinpop17/app-ideas' },
+      { id: 3, title: 'SEP490 – Clean Code Guide', source: 'GitHub', type: 'documents', rating: 4.8, url: 'https://github.com/ryanmcdermott/clean-code-javascript' },
+      { id: 4, title: 'SEP490 – Full Stack Project', source: 'YouTube', type: 'videos', channel: 'Tech With Tim', views: '890K', url: 'https://www.youtube.com/watch?v=erEgovG9WBs' },
+      { id: 5, title: 'SEP490 – Coding Interview University', source: 'GitHub', type: 'research', citations: 289, url: 'https://github.com/jwasham/coding-interview-university' },
+      // MLN131 – Scientific Socialism
+      { id: 6, title: 'MLN131 – CNXH Khoa học', source: 'Tài liệu FPT', type: 'documents', rating: 4.5, url: 'https://daihoc.fpt.edu.vn/' },
+      // HCM202 – Ho Chi Minh Ideology
+      { id: 7, title: 'HCM202 – Tư tưởng Hồ Chí Minh', source: 'Tài liệu FPT', type: 'documents', rating: 4.5, url: 'https://daihoc.fpt.edu.vn/' },
+      // Technical Writing & Career
+      { id: 8, title: 'Technical Writing Guide', source: 'Google Developers', type: 'documents', rating: 4.8, url: 'https://developers.google.com/tech-writing' },
+      { id: 9, title: 'Resume & Portfolio Tips', source: 'Indeed', type: 'documents', rating: 4.7, url: 'https://www.indeed.com/career-advice/resumes-cover-letters' },
+      { id: 10, title: 'Technical Interview Prep', source: 'YouTube', type: 'videos', channel: 'NeetCode', views: '1.8M', url: 'https://www.youtube.com/watch?v=aa2nLrBpFxE' },
     ],
   },
   mm: {

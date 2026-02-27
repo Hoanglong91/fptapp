@@ -94,6 +94,7 @@ export const courseData: Record<string, Record<number, CourseResource[]>> = {
       // SSG104 – Communication and In-Group Working Skills
       { id: 8, title: 'SSG104 – Teamwork & Communication', source: 'Coursera', type: 'documents', rating: 4.7, url: 'https://www.coursera.org/learn/teamwork-skills' },
       { id: 9, title: 'SSG104 – Communication Skills', source: 'YouTube', type: 'videos', channel: 'TED', views: '6.5M', url: 'https://www.youtube.com/watch?v=eIho2S0ZahI' },
+      { id: 14, title: 'SSG104 – Syllabus chi tiết (FPT)', source: 'FPT FLM', type: 'documents', rating: 4.8, url: 'https://flm.fpt.edu.vn/gui/role/student/SyllabusDetails?sylID=11845' },
       // SWE202c – Introduction to Software Engineering
       { id: 10, title: 'SWE202c – Software Engineering', source: 'GeeksforGeeks', type: 'documents', rating: 4.7, url: 'https://www.geeksforgeeks.org/software-engineering/' },
       { id: 11, title: 'SWE202c – SE Full Course', source: 'YouTube', type: 'videos', channel: 'freeCodeCamp', views: '1.9M', url: 'https://www.youtube.com/watch?v=uoMOA5fgTCA' },

@@ -86,6 +86,7 @@ export const courseData: Record<string, Record<number, CourseResource[]>> = {
       // IOT102 – Internet of Things
       { id: 3, title: 'IOT102 – IoT Fundamentals', source: 'GeeksforGeeks', type: 'documents', rating: 4.6, url: 'https://www.geeksforgeeks.org/introduction-to-internet-of-things-iot/' },
       { id: 4, title: 'IOT102 – IoT Full Course', source: 'YouTube', type: 'videos', channel: 'Simplilearn', views: '2.3M', url: 'https://www.youtube.com/watch?v=LlhmzVL5bm8' },
+      { id: 13, title: 'IOT102 – IoT là gì? Tổng quan về IoT', source: 'PACE', type: 'documents', rating: 4.5, url: 'https://www.pace.edu.vn/tin-kho-tri-thuc/iot-la-gi' },
       // PRJ301 – Java Web Application Development
       { id: 5, title: 'PRJ301 – Java Servlets & JSP', source: 'GeeksforGeeks', type: 'documents', rating: 4.7, url: 'https://www.geeksforgeeks.org/introduction-java-servlets/' },
       { id: 6, title: 'PRJ301 – Spring Boot Guide', source: 'Spring.io', type: 'documents', rating: 4.9, url: 'https://spring.io/guides' },

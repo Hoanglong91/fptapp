@@ -320,7 +320,7 @@ export const courseData: Record<string, Record<number, CourseResource[]>> = {
       { id: 2, title: 'Thesis Writing Guide', source: 'University Resources', type: 'documents', rating: 4.8, url: 'https://writing.wisc.edu/handbook/' },
       { id: 3, title: 'Language Teaching Career', source: 'Indeed', type: 'documents', rating: 4.6, url: 'https://www.indeed.com/career-advice/finding-a-job/language-teaching' },
       { id: 4, title: 'Academic Presentation Skills', source: 'YouTube', type: 'videos', channel: 'Academic English', views: '1.2M', url: 'https://www.youtube.com/watch?v=Unzc731iCUY' },
-      { id: 5, title: 'Career in Chinese Language', source: 'YouTube', type: 'videos', channel: 'Career Advice', views: '320K', url: 'https://www.youtube.com/results?search_query=chinese+language+career' },
+      { id: 5, title: 'Career in Chinese Language', source: 'YouTube', type: 'videos', channel: 'ChineseClass101', views: '320K', url: 'https://www.youtube.com/watch?v=p9Qn5Vc0F7U' },
       { id: 6, title: 'Applied Linguistics Research', source: 'Oxford', type: 'research', citations: 312, url: 'https://academic.oup.com/applij' },
     ],
   },

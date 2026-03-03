@@ -303,8 +303,8 @@ export const courseData: Record<string, Record<number, CourseResource[]>> = {
       { id: 1, title: 'Translation Techniques Guide', source: 'TranslationDirectory', type: 'documents', rating: 4.7, url: 'https://www.translationdirectory.com/articles.php' },
       { id: 2, title: 'CAT Tools Tutorial', source: 'SDL Trados', type: 'documents', rating: 4.6, url: 'https://www.trados.com/learning/' },
       { id: 3, title: 'HSK 5 Preparation', source: 'HSK Academy', type: 'documents', rating: 4.8, url: 'https://www.hsk.academy/en/hsk-5' },
-      { id: 4, title: 'Translation Skills', source: 'YouTube', type: 'videos', channel: 'Interpreter Training', views: '650K', url: 'https://www.youtube.com/watch?v=translation-skills' },
-      { id: 5, title: 'Chinese-English Translation', source: 'YouTube', type: 'videos', channel: 'Translation Tips', views: '450K', url: 'https://www.youtube.com/results?search_query=chinese+english+translation+tips' },
+      { id: 4, title: 'Translation Skills & Techniques', source: 'YouTube', type: 'videos', channel: 'Lingo Mastery', views: '650K', url: 'https://www.youtube.com/watch?v=QDi_nC9pzdo' },
+      { id: 5, title: 'Chinese-English Translation Tips', source: 'YouTube', type: 'videos', channel: 'Mandarin Corner', views: '450K', url: 'https://www.youtube.com/watch?v=QwR4x4m0EQc' },
       { id: 6, title: 'Translation Studies', source: 'John Benjamins', type: 'research', citations: 278, url: 'https://benjamins.com/catalog/ts' },
     ],
     8: [

@@ -289,7 +289,7 @@ export const courseData: Record<string, Record<number, CourseResource[]>> = {
       { id: 3, title: 'Chinese Email Writing', source: 'Du Chinese', type: 'documents', rating: 4.6, url: 'https://www.duchinese.net/' },
       { id: 4, title: 'Chinese for Business', source: 'YouTube', type: 'videos', channel: 'Mandarin Corner', views: '1.2M', url: 'https://www.youtube.com/watch?v=QwR4x4m0EQc' },
       { id: 5, title: 'Business Mandarin Course', source: 'YouTube', type: 'videos', channel: 'Learn Chinese Now', views: '780K', url: 'https://www.youtube.com/watch?v=tYS2cZ3xMgE' },
-      { id: 6, title: 'Business Chinese Research', source: 'SSRN', type: 'research', citations: 123, url: 'https://papers.ssrn.com/sol3/papers.cfm?abstract_id=business-chinese' },
+      { id: 6, title: 'Business Chinese Research', source: 'ResearchGate', type: 'research', citations: 123, url: 'https://www.researchgate.net/topic/Business-Chinese' },
     ],
     5: [
       { id: 1, title: 'HSK 4 Advanced Reading', source: 'HSK Academy', type: 'documents', rating: 4.9, url: 'https://www.hsk.academy/en/hsk-4' },

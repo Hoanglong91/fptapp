@@ -91,7 +91,7 @@ export const courseData: Record<string, Record<number, CourseResource[]>> = {
       { id: 6, title: 'PRJ301 – Spring Boot Guide', source: 'Spring.io', type: 'documents', rating: 4.9, url: 'https://spring.io/guides' },
       { id: 7, title: 'PRJ301 – Java Web App Full Course', source: 'YouTube', type: 'videos', channel: 'Amigoscode', views: '4.1M', url: 'https://www.youtube.com/watch?v=9SGDpanrc8U' },
       // SSG104 – Communication and In-Group Working Skills
-      { id: 8, title: 'SSG104 – Teamwork & Communication', source: 'FPT FLM', type: 'documents', rating: 4.7, url: 'https://flm.fpt.edu.vn/gui/role/student/SyllabusDetails?sylID=11845' },
+      { id: 8, title: 'SSG104 – Teamwork & Communication', source: 'Course Hero', type: 'documents', rating: 4.7, url: 'https://www.coursehero.com/study-guides/lumencollegesuccessxtraining2/' },
       { id: 9, title: 'SSG104 – Communication Skills', source: 'YouTube', type: 'videos', channel: 'TED', views: '6.5M', url: 'https://www.youtube.com/watch?v=eIho2S0ZahI' },
       // SWE202c – Introduction to Software Engineering
       { id: 10, title: 'SWE202c – Software Engineering', source: 'GeeksforGeeks', type: 'documents', rating: 4.7, url: 'https://www.geeksforgeeks.org/software-engineering/' },

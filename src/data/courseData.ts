@@ -311,8 +311,8 @@ export const courseData: Record<string, Record<number, CourseResource[]>> = {
       { id: 1, title: 'Simultaneous Interpretation Guide', source: 'AIIC', type: 'documents', rating: 4.8, url: 'https://aiic.org/document/4129/' },
       { id: 2, title: 'HSK 6 Advanced Study', source: 'HSK Academy', type: 'documents', rating: 4.9, url: 'https://www.hsk.academy/en/hsk-6' },
       { id: 3, title: 'Conference Interpreting', source: 'ORCIT', type: 'documents', rating: 4.7, url: 'https://www.orcit.eu/' },
-      { id: 4, title: 'Interpretation Practice', source: 'YouTube', type: 'videos', channel: 'Interpreter Training', views: '550K', url: 'https://www.youtube.com/results?search_query=chinese+interpretation+practice' },
-      { id: 5, title: 'Professional Interpreting Skills', source: 'YouTube', type: 'videos', channel: 'Language Professionals', views: '380K', url: 'https://www.youtube.com/results?search_query=professional+interpreting' },
+      { id: 4, title: 'Interpretation Practice', source: 'YouTube', type: 'videos', channel: 'ChinesePod', views: '550K', url: 'https://www.youtube.com/watch?v=UbZ4X9y5qYE' },
+      { id: 5, title: 'Professional Interpreting Skills', source: 'YouTube', type: 'videos', channel: 'Yoyo Chinese', views: '380K', url: 'https://www.youtube.com/watch?v=g5m7xeFXDAU' },
       { id: 6, title: 'Interpreting Studies Research', source: 'Routledge', type: 'research', citations: 198, url: 'https://www.routledge.com/interpreting' },
     ],
     9: [

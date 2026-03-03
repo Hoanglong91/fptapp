@@ -335,7 +335,7 @@ export const courseData: Record<string, Record<number, CourseResource[]>> = {
     ],
     2: [
       { id: 1, title: 'Consumer Behavior Guide', source: 'HubSpot', type: 'documents', rating: 4.8, url: 'https://blog.hubspot.com/marketing/consumer-behavior' },
-      { id: 2, title: 'Psychology of Marketing', source: 'Verywell Mind', type: 'documents', rating: 4.7, url: 'https://www.verywellmind.com/consumer-psychology' },
+      { id: 2, title: 'Psychology of Marketing', source: 'Investopedia', type: 'documents', rating: 4.7, url: 'https://www.investopedia.com/terms/c/consumer-theory.asp' },
       { id: 3, title: 'Consumer Psychology Course', source: 'Coursera', type: 'documents', rating: 4.8, url: 'https://www.coursera.org/learn/consumer-behavior' },
       { id: 4, title: 'Consumer Behavior Explained', source: 'YouTube', type: 'videos', channel: 'Marketing91', views: '890K', url: 'https://www.youtube.com/watch?v=tM4F3k3Ksbc' },
       { id: 5, title: 'Marketing Psychology', source: 'YouTube', type: 'videos', channel: 'The Futur', views: '1.8M', url: 'https://www.youtube.com/watch?v=9X4R3_DQekg' },

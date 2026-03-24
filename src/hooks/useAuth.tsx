@@ -23,17 +23,28 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   const fetchUserRole = async (userId: string) => {
+    // Create a timeout promise
+    const timeout = new Promise<null>((_, reject) => 
+      setTimeout(() => reject(new Error('Fetch role timeout')), 5000)
+    );
+
     try {
-      const { data, error } = await supabase.rpc('get_user_role', { _user_id: userId });
+      console.log('Fetching role for:', userId);
+      // Race the RPC call against the timeout
+      const { data, error } = await Promise.race([
+        supabase.rpc('get_user_role', { _user_id: userId }),
+        timeout
+      ]) as any;
       
       if (error) {
         console.error('Error fetching role:', error);
         setRole('student');
       } else {
+        console.log('Role fetched:', data);
         setRole(data || 'student');
       }
     } catch (err) {
-      console.error('Failed to fetch role:', err);
+      console.error('Failed to fetch role (timeout or error):', err);
       setRole('student');
     }
   };
@@ -42,8 +53,28 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
-        setSession(session);
+        console.log('Auth state change:', event, session?.user?.id);
         const currentUser = session?.user ?? null;
+        setSession(session);
+        setUser(currentUser);
+        
+        if (currentUser) {
+          fetchUserRole(currentUser.id).finally(() => setLoading(false));
+        } else {
+          setRole(null);
+          setLoading(false);
+        }
+      }
+    );
+
+    // THEN check for existing session
+    const checkSession = async () => {
+      try {
+        const { data: { session }, error } = await supabase.auth.getSession();
+        if (error) throw error;
+        
+        const currentUser = session?.user ?? null;
+        setSession(session);
         setUser(currentUser);
         
         if (currentUser) {
@@ -51,23 +82,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         } else {
           setRole(null);
         }
+      } catch (err) {
+        console.error('Session check failed:', err);
+        setRole(null);
+      } finally {
         setLoading(false);
       }
-    );
+    };
 
-    // THEN check for existing session
-    supabase.auth.getSession().then(async ({ data: { session } }) => {
-      setSession(session);
-      const currentUser = session?.user ?? null;
-      setUser(currentUser);
-      
-      if (currentUser) {
-        await fetchUserRole(currentUser.id);
-      } else {
-        setRole(null);
-      }
-      setLoading(false);
-    });
+    checkSession();
 
     return () => subscription.unsubscribe();
   }, []);

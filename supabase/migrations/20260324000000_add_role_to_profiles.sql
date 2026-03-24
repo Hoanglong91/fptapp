@@ -69,3 +69,13 @@ FOR UPDATE USING (
 -- Users can view their own role
 CREATE POLICY "Users can view own role" ON public.user_roles
 FOR SELECT USING (auth.uid() = user_id);
+
+-- 7. Add Admin policies for profiles table
+-- Admins can view all profiles
+CREATE POLICY "Admins can view all profiles" ON public.profiles
+FOR SELECT USING (
+  EXISTS (
+    SELECT 1 FROM public.user_roles WHERE user_id = auth.uid() AND role = 'admin'
+  )
+);
+

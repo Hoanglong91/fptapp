@@ -24,52 +24,58 @@ export default function AuthPage() {
     e.preventDefault();
     setLoading(true);
 
+    // Automatically append @fpt.edu.vn if no @ is present
+    let finalEmail = email.trim();
+    if (finalEmail && !finalEmail.includes('@')) {
+      finalEmail = `${finalEmail}@fpt.edu.vn`;
+    }
+
     try {
       if (mode === 'login') {
-        const { error } = await signIn(email, password);
+        const { error } = await signIn(finalEmail, password);
         if (error) {
           if (error.message.includes('Invalid login credentials')) {
-            toast.error('Invalid email or password. Please try again.');
+            toast.error('Sai email/mã sinh viên hoặc mật khẩu. Vui lòng thử lại.');
           } else {
             toast.error(error.message);
           }
         } else {
-          toast.success('Welcome back!');
+          toast.success('Chào mừng bạn trở lại!');
           navigate('/majors');
         }
       } else if (mode === 'signup') {
         if (password !== confirmPassword) {
-          toast.error('Passwords do not match');
+          toast.error('Mật khẩu xác nhận không khớp');
           setLoading(false);
           return;
         }
         if (password.length < 6) {
-          toast.error('Password must be at least 6 characters');
+          toast.error('Mật khẩu phải có ít nhất 6 ký tự');
           setLoading(false);
           return;
         }
-        const { error } = await signUp(email, password);
+        const { error } = await signUp(finalEmail, password);
         if (error) {
           if (error.message.includes('already registered')) {
-            toast.error('This email is already registered. Try logging in instead.');
+            toast.error('Email này đã được đăng ký. Hãy thử đăng nhập.');
           } else {
             toast.error(error.message);
           }
         } else {
-          toast.success('Account created successfully! You can now log in.');
+          toast.success('Đăng ký thành công! Bạn có thể đăng nhập ngay bây giờ.');
           setMode('login');
         }
       } else if (mode === 'forgot') {
-        const { error } = await resetPassword(email);
+        const { error } = await resetPassword(finalEmail);
         if (error) {
           toast.error(error.message);
         } else {
-          toast.success('Password reset email sent! Check your inbox.');
+          toast.success('Email đặt lại mật khẩu đã được gửi!');
           setMode('login');
         }
       }
     } catch (err) {
-      toast.error('An unexpected error occurred');
+      toast.error('Đã có lỗi xảy ra');
     } finally {
       setLoading(false);
     }
@@ -130,7 +136,7 @@ export default function AuthPage() {
                 Email / Mã sinh viên
               </label>
               <Input
-                type="email"
+                type="text"
                 placeholder="your.email@fpt.edu.vn"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}

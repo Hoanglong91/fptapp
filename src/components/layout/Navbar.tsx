@@ -18,7 +18,7 @@ import { ThemeToggle } from '@/components/ThemeToggle';
 import OnlineUsersCounter from '@/components/OnlineUsersCounter';
 
 export default function Navbar() {
-  const { user, signOut } = useAuth();
+  const { user, isAdmin, signOut } = useAuth();
   const { streak } = useLearningStreak();
   const navigate = useNavigate();
   const location = useLocation();

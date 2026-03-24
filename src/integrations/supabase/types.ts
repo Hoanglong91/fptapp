@@ -112,7 +112,6 @@ export type Database = {
           id: string
           major: string | null
           phone: string | null
-          role: string | null
           student_id: string | null
           updated_at: string
           user_id: string
@@ -124,7 +123,6 @@ export type Database = {
           id?: string
           major?: string | null
           phone?: string | null
-          role?: string | null
           student_id?: string | null
           updated_at?: string
           user_id: string
@@ -136,7 +134,6 @@ export type Database = {
           id?: string
           major?: string | null
           phone?: string | null
-          role?: string | null
           student_id?: string | null
           updated_at?: string
           user_id?: string

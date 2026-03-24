@@ -35,6 +35,7 @@ export default function Navbar() {
     { href: '/majors', label: 'Trang chủ', icon: Home },
     { href: '/gpa', label: 'Tính GPA', icon: Calculator },
     { href: '/favorites', label: 'Yêu thích', icon: Heart },
+    ...(isAdmin ? [{ href: '/admin', label: 'Admin', icon: ShieldCheck }] : []),
   ];
 
   const isActive = (path: string) => location.pathname === path;

@@ -16,7 +16,7 @@ import Chatbot from '@/components/Chatbot';
 
 export default function ProfilePage() {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, role } = useAuth();
   const { profile, loading: profileLoading, updateProfile } = useProfile();
   const { streak, loading: streakLoading } = useLearningStreak();
 
@@ -82,6 +82,9 @@ export default function ProfilePage() {
               {profile?.student_id && (
                 <span className="text-sm font-medium">{profile.student_id}</span>
               )}
+              <span className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-primary/10 text-primary text-[10px] uppercase font-bold tracking-wider border border-primary/20 shadow-sm ml-auto sm:ml-0">
+                {role || 'student'}
+              </span>
             </div>
           </div>
         </motion.div>

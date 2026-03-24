@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { GraduationCap, LogOut, User, Menu, Flame, Home, Calculator, Heart } from 'lucide-react';
+import { GraduationCap, LogOut, User, Menu, Flame, Home, Calculator, Heart, ShieldCheck } from 'lucide-react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
@@ -18,7 +18,7 @@ import { ThemeToggle } from '@/components/ThemeToggle';
 import OnlineUsersCounter from '@/components/OnlineUsersCounter';
 
 export default function Navbar() {
-  const { user, signOut } = useAuth();
+  const { user, isAdmin, signOut } = useAuth();
   const { streak } = useLearningStreak();
   const navigate = useNavigate();
   const location = useLocation();
@@ -35,6 +35,7 @@ export default function Navbar() {
     { href: '/majors', label: 'Trang chủ', icon: Home },
     { href: '/gpa', label: 'Tính GPA', icon: Calculator },
     { href: '/favorites', label: 'Yêu thích', icon: Heart },
+    ...(isAdmin ? [{ href: '/admin', label: 'Admin', icon: ShieldCheck }] : []),
   ];
 
   const isActive = (path: string) => location.pathname === path;

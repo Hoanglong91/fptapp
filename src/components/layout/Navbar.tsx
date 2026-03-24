@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { GraduationCap, LogOut, User, Menu, Flame, Home, Calculator, Heart } from 'lucide-react';
+import { GraduationCap, LogOut, User, Menu, Flame, Home, Calculator, Heart, ShieldCheck } from 'lucide-react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';

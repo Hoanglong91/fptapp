@@ -16,6 +16,7 @@ import NotFound from "./pages/NotFound";
 const queryClient = new QueryClient();
 
 import AdminDashboard from "./pages/AdminDashboard";
+import UserManagement from "./pages/UserManagement";
 
 // Protected Route Wrapper
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -135,6 +136,14 @@ const AppRoutes = () => (
       element={
         <AdminRoute>
           <AdminDashboard />
+        </AdminRoute>
+      }
+    />
+    <Route
+      path="/admin/users"
+      element={
+        <AdminRoute>
+          <UserManagement />
         </AdminRoute>
       }
     />

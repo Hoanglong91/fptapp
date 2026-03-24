@@ -3,7 +3,10 @@ import { useAuth } from '@/hooks/useAuth';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Users, Settings, Database, ShieldCheck } from 'lucide-react';
 
+import { useNavigate } from 'react-router-dom';
+
 const AdminDashboard = () => {
+  const navigate = useNavigate();
   const { user, role } = useAuth();
 
   const stats = [
@@ -41,7 +44,10 @@ const AdminDashboard = () => {
           </CardHeader>
           <CardContent>
             <p className="text-sm text-muted-foreground mb-4">Manage student profiles, roles, and permissions.</p>
-            <button className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:opacity-90 transition-opacity">
+            <button 
+              className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:opacity-90 transition-opacity"
+              onClick={() => navigate('/admin/users')}
+            >
               View All Users
             </button>
           </CardContent>

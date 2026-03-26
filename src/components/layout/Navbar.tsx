@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { GraduationCap, LogOut, User, Menu, Flame, Home, Calculator, Heart, ShieldCheck } from 'lucide-react';
+import { GraduationCap, LogOut, User, Menu, Flame, Home, Calculator, Heart, ShieldCheck, Trophy } from 'lucide-react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
 import { useLearningStreak } from '@/hooks/useLearningStreak';
+import { useLanguage } from '@/context/LanguageContext';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,12 +15,15 @@ import {
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/sheet';
 import StreakBadge from '@/components/profile/StreakBadge';
+import RankBadge from '@/components/profile/RankBadge';
 import { ThemeToggle } from '@/components/ThemeToggle';
+import { LanguageToggle } from '@/components/LanguageToggle';
 import OnlineUsersCounter from '@/components/OnlineUsersCounter';
 
 export default function Navbar() {
   const { user, isAdmin, signOut } = useAuth();
   const { streak } = useLearningStreak();
+  const { t } = useLanguage();
   const navigate = useNavigate();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -32,10 +36,11 @@ export default function Navbar() {
   const userInitials = user?.email?.substring(0, 2).toUpperCase() || 'U';
 
   const navLinks = [
-    { href: '/majors', label: 'Trang chủ', icon: Home },
-    { href: '/gpa', label: 'Tính GPA', icon: Calculator },
-    { href: '/favorites', label: 'Yêu thích', icon: Heart },
-    ...(isAdmin ? [{ href: '/admin', label: 'Admin', icon: ShieldCheck }] : []),
+    { href: '/majors', label: t.nav.home, icon: Home },
+    { href: '/leaderboard', label: t.nav.leaderboard, icon: Trophy },
+    { href: '/gpa', label: t.nav.gpa, icon: Calculator },
+    { href: '/favorites', label: t.nav.favorites, icon: Heart },
+    ...(isAdmin ? [{ href: '/admin', label: t.nav.admin, icon: ShieldCheck }] : []),
   ];
 
   const isActive = (path: string) => location.pathname === path;
@@ -73,8 +78,14 @@ export default function Navbar() {
           {/* Online Users Counter */}
           {user && <OnlineUsersCounter compact />}
 
+          {/* Language Toggle */}
+          <LanguageToggle />
+
           {/* Theme Toggle */}
           <ThemeToggle />
+
+          {/* Rank & Points Status */}
+          {user && <RankBadge compact />}
 
           {/* Streak Badge */}
           {user && streak.currentStreak > 0 && (
@@ -102,26 +113,26 @@ export default function Navbar() {
                 <div className="flex items-center justify-start gap-2 p-2">
                   <div className="flex flex-col space-y-1 leading-none">
                     <p className="font-medium text-sm">{user.email}</p>
-                    <p className="text-xs text-muted-foreground">FPT Student</p>
+                    <p className="text-xs text-muted-foreground">{t.nav.fptStudent}</p>
                   </div>
                 </div>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
                   <Link to="/profile" className="cursor-pointer">
                     <User className="mr-2 h-4 w-4" />
-                    Hồ sơ của tôi
+                    {t.nav.profile}
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleSignOut} className="text-destructive cursor-pointer">
                   <LogOut className="mr-2 h-4 w-4" />
-                  Đăng xuất
+                  {t.nav.signOut}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
             <Button variant="default" size="sm" onClick={() => navigate('/auth')} className="hidden sm:flex">
-              Đăng nhập
+              {t.nav.signIn}
             </Button>
           )}
 
@@ -145,17 +156,22 @@ export default function Navbar() {
                       </Avatar>
                       <div>
                         <p className="font-medium text-sm">{user?.email?.split('@')[0]}</p>
-                        <p className="text-xs text-muted-foreground">FPT Student</p>
+                        <p className="text-xs text-muted-foreground">{t.nav.fptStudent}</p>
                       </div>
                     </div>
                   </div>
                   
-                  {/* Mobile Streak */}
-                  {user && streak.currentStreak > 0 && (
-                    <div className="mt-4 flex items-center gap-2 bg-orange-500/10 px-3 py-2 rounded-lg">
-                      <Flame className="w-5 h-5 text-orange-500" />
-                      <span className="font-bold text-orange-600">{streak.currentStreak}</span>
-                      <span className="text-sm text-muted-foreground">ngày liên tiếp</span>
+                  {/* Mobile Rank & Streak */}
+                  {user && (
+                    <div className="mt-4 flex flex-col gap-3">
+                      <RankBadge />
+                      {streak.currentStreak > 0 && (
+                        <div className="flex items-center gap-2 bg-orange-500/10 px-3 py-2 rounded-xl">
+                          <Flame className="w-5 h-5 text-orange-500" />
+                          <span className="font-bold text-orange-600">{streak.currentStreak}</span>
+                          <span className="text-sm text-muted-foreground ml-auto uppercase font-black text-[10px] tracking-widest">{t.nav.streakDays}</span>
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>
@@ -187,7 +203,7 @@ export default function Navbar() {
                       }`}
                     >
                       <User className="w-5 h-5" />
-                      Hồ sơ của tôi
+                      {t.nav.profile}
                     </Link>
                   </SheetClose>
                 </nav>
@@ -201,7 +217,7 @@ export default function Navbar() {
                       onClick={handleSignOut}
                     >
                       <LogOut className="mr-2 h-4 w-4" />
-                      Đăng xuất
+                      {t.nav.signOut}
                     </Button>
                   </SheetClose>
                 </div>

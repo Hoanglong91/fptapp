@@ -1,15 +1,17 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageCircle, Send, X, Trash2, Users, Globe } from 'lucide-react';
+import { MessageCircle, Send, X, Trash2, Users, Globe, Eraser } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { useCommunityChat } from '@/hooks/useCommunityChat';
 import { useAuth } from '@/hooks/useAuth';
+import { useProfile } from '@/hooks/useProfile';
 import { useOnlineUsers } from '@/hooks/useOnlineUsers';
 import { format, isToday, isYesterday, parseISO } from 'date-fns';
 import { vi } from 'date-fns/locale';
+import { toast } from 'sonner';
 
 interface CommunityChatProps {
   major?: string | null; // null = general chat, string = specific major
@@ -37,9 +39,11 @@ export default function CommunityChat({ major = null }: CommunityChatProps) {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const { user } = useAuth();
-  const { messages, loading, sendMessage, deleteMessage } = useCommunityChat({ major });
+  const { profile } = useProfile();
+  const { messages, loading, sendMessage, deleteMessage, clearAllMessages } = useCommunityChat({ major });
   const { onlineCount } = useOnlineUsers();
 
+  const isAdmin = profile?.role === 'admin';
   const chatTitle = major ? majorNames[major] || major.toUpperCase() : 'Chat Cộng Đồng';
   const gradientColor = major ? majorColors[major] || 'from-blue-500 to-cyan-500' : 'from-blue-500 to-cyan-500';
   const ChatIcon = major ? Users : Globe;
@@ -67,6 +71,24 @@ export default function CommunityChat({ major = null }: CommunityChatProps) {
       setInputValue('');
     }
     setIsSending(false);
+  };
+
+  const handleClearChat = async () => {
+    if (!window.confirm('Sếp có chắc chắn muốn dọn sạch toàn bộ tin nhắn không?')) return;
+    
+    const result = await clearAllMessages();
+    if (result.error) {
+      toast.error('Có lỗi xảy ra khi dọn chat sếp ơi!');
+    } else {
+      toast.success('Đã dọn dẹp sạch sẽ phòng chat!');
+    }
+  };
+
+  const handleDeleteMessage = async (msgId: string) => {
+    const result = await deleteMessage(msgId);
+    if (result?.error) {
+      toast.error('Lỗi khi xóa tin nhắn!');
+    }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -137,14 +159,27 @@ export default function CommunityChat({ major = null }: CommunityChatProps) {
                   </div>
                 </div>
               </div>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => setIsOpen(false)}
-                className="h-8 w-8 rounded-full"
-              >
-                <X className="w-4 h-4" />
-              </Button>
+              <div className="flex items-center gap-1">
+                {isAdmin && (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={handleClearChat}
+                    title="Dọn dẹp phòng chat"
+                    className="h-8 w-8 rounded-full text-destructive hover:bg-destructive/10"
+                  >
+                    <Eraser className="w-4 h-4" />
+                  </Button>
+                )}
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setIsOpen(false)}
+                  className="h-8 w-8 rounded-full"
+                >
+                  <X className="w-4 h-4" />
+                </Button>
+              </div>
             </div>
 
             {/* Messages */}
@@ -163,6 +198,7 @@ export default function CommunityChat({ major = null }: CommunityChatProps) {
                 <div className="space-y-3">
                   {messages.map((message, index) => {
                     const isOwn = message.user_id === user?.id;
+                    const canDelete = isOwn || isAdmin;
                     const showAvatar = index === 0 || messages[index - 1]?.user_id !== message.user_id;
 
                     return (
@@ -193,15 +229,21 @@ export default function CommunityChat({ major = null }: CommunityChatProps) {
                               : 'bg-muted rounded-tl-sm'
                           }`}>
                             <p className="text-sm whitespace-pre-wrap break-words">{message.content}</p>
-                            <span className={`text-[10px] mt-1 block ${isOwn ? 'text-primary-foreground/70' : 'text-muted-foreground'}`}>
-                              {formatMessageTime(message.created_at)}
-                            </span>
-                            {isOwn && (
+                            <div className="flex items-center gap-2 mt-1">
+                              <span className={`text-[10px] block ${isOwn ? 'text-primary-foreground/70' : 'text-muted-foreground'}`}>
+                                {formatMessageTime(message.created_at)}
+                              </span>
+                              {!isOwn && isAdmin && (
+                                <span className="text-[10px] font-bold text-destructive uppercase tracking-tighter">Admin Power</span>
+                              )}
+                            </div>
+                            
+                            {canDelete && (
                               <button
-                                onClick={() => deleteMessage(message.id)}
-                                className="absolute -left-6 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded-full hover:bg-destructive/10"
+                                onClick={() => handleDeleteMessage(message.id)}
+                                className={`absolute ${isOwn ? '-left-6' : '-right-6'} top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded-full hover:bg-destructive/10`}
                               >
-                                <Trash2 className="w-3 h-3 text-destructive" />
+                                <Trash2 className={`w-3 h-3 ${isOwn ? 'text-destructive' : 'text-destructive'}`} />
                               </button>
                             )}
                           </div>

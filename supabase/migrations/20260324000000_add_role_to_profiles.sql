@@ -32,7 +32,7 @@ BEGIN
     SELECT 1 FROM public.user_roles WHERE user_id = _user_id AND role = _role
   );
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$ LANGUAGE  SECURITY DEFINER;
 
 -- 6. Trigger to create student role on profile creation (optional but recommended)
 CREATE OR REPLACE FUNCTION public.handle_new_user_role()

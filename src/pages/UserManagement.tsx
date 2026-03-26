@@ -17,10 +17,36 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Loader2, UserCog, UserRound } from 'lucide-react';
+import { 
+  ArrowLeft, 
+  Loader2, 
+  UserCog, 
+  UserRound, 
+  Edit2, 
+  Trash2, 
+  Eye 
+} from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
-
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 interface UserProfile {
   user_id: string;
   display_name: string | null;
@@ -33,6 +59,17 @@ const UserManagement = () => {
   const { user: currentUser, isAdmin } = useAuth();
   const [users, setUsers] = useState<UserProfile[]>([]);
   const [loading, setLoading] = useState(true);
+  
+  // Edit State
+  const [editingUser, setEditingUser] = useState<UserProfile | null>(null);
+  const [editDisplayName, setEditDisplayName] = useState('');
+  const [editStudentId, setEditStudentId] = useState('');
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  
+  // Delete State
+  const [deletingUser, setDeletingUser] = useState<UserProfile | null>(null);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [isActionPending, setIsActionPending] = useState(false);
 
   const fetchUsers = async () => {
     try {
@@ -84,8 +121,11 @@ const UserManagement = () => {
 
       const { error } = await supabase
         .from('user_roles')
-        .update({ role: newRole as any })
-        .eq('user_id', userId);
+        .upsert({ 
+          user_id: userId, 
+          role: newRole as any,
+          updated_at: new Date().toISOString()
+        }, { onConflict: 'user_id' });
 
       if (error) throw error;
 
@@ -96,6 +136,81 @@ const UserManagement = () => {
       console.error('Error updating role:', error);
       toast.error('Cập nhật quyền thất bại');
     }
+  };
+
+  const handleUpdateUser = async () => {
+    if (!editingUser) return;
+    
+    try {
+      setIsActionPending(true);
+      const { error } = await supabase
+        .from('profiles')
+        .update({
+          display_name: editDisplayName,
+          student_id: editStudentId,
+          updated_at: new Date().toISOString()
+        })
+        .eq('user_id', editingUser.user_id);
+
+      if (error) throw error;
+
+      toast.success('Cập nhật thông tin thành công');
+      setUsers(prev => prev.map(u => 
+        u.user_id === editingUser.user_id 
+          ? { ...u, display_name: editDisplayName, student_id: editStudentId } 
+          : u
+      ));
+      setIsEditDialogOpen(false);
+    } catch (error) {
+      console.error('Error updating user:', error);
+      toast.error('Cập nhật thông tin thất bại');
+    } finally {
+      setIsActionPending(false);
+    }
+  };
+
+  const handleDeleteUser = async () => {
+    if (!deletingUser) return;
+    
+    try {
+      setIsActionPending(true);
+      
+      // Delete user roles first
+      await supabase.from('user_roles').delete().eq('user_id', deletingUser.user_id);
+      
+      // Delete profile (cascades to streaks, logs)
+      const { error } = await supabase
+        .from('profiles')
+        .delete()
+        .eq('user_id', deletingUser.user_id);
+
+      if (error) throw error;
+
+      toast.success('Xóa người dùng thành công');
+      setUsers(prev => prev.filter(u => u.user_id !== deletingUser.user_id));
+      setIsDeleteDialogOpen(false);
+    } catch (error) {
+      console.error('Error deleting user:', error);
+      toast.error('Xóa người dùng thất bại');
+    } finally {
+      setIsActionPending(false);
+    }
+  };
+
+  const openEditDialog = (user: UserProfile) => {
+    setEditingUser(user);
+    setEditDisplayName(user.display_name || '');
+    setEditStudentId(user.student_id || '');
+    setIsEditDialogOpen(true);
+  };
+
+  const openDeleteDialog = (user: UserProfile) => {
+    if (user.user_id === currentUser?.id) {
+      toast.error('Bạn không thể tự xóa chính mình');
+      return;
+    }
+    setDeletingUser(user);
+    setIsDeleteDialogOpen(true);
   };
 
   if (!isAdmin) {
@@ -184,9 +299,33 @@ const UserManagement = () => {
                       </Select>
                     </TableCell>
                     <TableCell className="text-right">
-                      <Button variant="outline" size="sm" onClick={() => navigate(`/profile/${profile.user_id}`)} disabled>
-                        Xem profile
-                      </Button>
+                      <div className="flex items-center justify-end gap-2">
+                        <Button 
+                          variant="ghost" 
+                          size="icon" 
+                          className="h-8 w-8 text-blue-500 hover:text-blue-600 hover:bg-blue-50"
+                          onClick={() => openEditDialog(profile)}
+                        >
+                          <Edit2 className="w-4 h-4" />
+                        </Button>
+                        <Button 
+                          variant="ghost" 
+                          size="icon" 
+                          className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/10"
+                          onClick={() => openDeleteDialog(profile)}
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="h-8 gap-1"
+                          onClick={() => navigate(`/profile/${profile.user_id}`)}
+                        >
+                          <Eye className="w-4 h-4" />
+                          Xem
+                        </Button>
+                      </div>
                     </TableCell>
                   </TableRow>
                 ))
@@ -195,6 +334,74 @@ const UserManagement = () => {
           </Table>
         )}
       </div>
+
+      {/* Edit Dialog */}
+      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Chỉnh sửa thông tin</DialogTitle>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid gap-2">
+              <Label htmlFor="display_name">Họ và tên</Label>
+              <Input
+                id="display_name"
+                value={editDisplayName}
+                onChange={(e) => setEditDisplayName(e.target.value)}
+                placeholder="Nhập tên hiển thị"
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="student_id">Mã số sinh viên</Label>
+              <Input
+                id="student_id"
+                value={editStudentId}
+                onChange={(e) => setEditStudentId(e.target.value)}
+                placeholder="Ví dụ: SE123456"
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsEditDialogOpen(false)} disabled={isActionPending}>
+              Hủy
+            </Button>
+            <Button onClick={handleUpdateUser} disabled={isActionPending}>
+              {isActionPending ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
+              Lưu thay đổi
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete Confirmation */}
+      <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-destructive flex items-center gap-2">
+              <Trash2 className="w-5 h-5" />
+              Xác nhận xóa tài khoản
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              Bạn có chắc chắn muốn xóa tài khoản **{deletingUser?.display_name || 'này'}**? 
+              Hành động này sẽ xóa vĩnh viễn dữ liệu hồ sơ, điểm số và chuỗi học tập của sinh viên này khỏi hệ thống.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={isActionPending}>Hủy</AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={(e) => {
+                e.preventDefault();
+                handleDeleteUser();
+              }}
+              className="bg-destructive hover:bg-destructive/90 transition-colors"
+              disabled={isActionPending}
+            >
+              {isActionPending ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
+              Xác nhận xóa
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };

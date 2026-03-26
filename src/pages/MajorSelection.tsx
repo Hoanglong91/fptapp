@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Code, Palette, Globe2, TrendingUp, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
+import { useLanguage } from '@/context/LanguageContext';
 import Navbar from '@/components/layout/Navbar';
 import Chatbot from '@/components/Chatbot';
 import CommunityChat from '@/components/CommunityChat';
@@ -67,6 +68,46 @@ const cardVariants = {
 export default function MajorSelection() {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { t } = useLanguage();
+
+  const majors = [
+    {
+      id: 'se',
+      name: t.major.se.name,
+      shortName: 'SE',
+      icon: Code,
+      color: 'from-blue-500 to-cyan-400',
+      description: t.major.se.desc,
+      subjects: ['Programming', 'Databases', 'Web Dev', 'Mobile'],
+    },
+    {
+      id: 'mm',
+      name: t.major.mm.name,
+      shortName: 'MM',
+      icon: Palette,
+      color: 'from-purple-500 to-pink-400',
+      description: t.major.mm.desc,
+      subjects: ['Design', 'Video', '3D', 'UX/UI'],
+    },
+    {
+      id: 'cn',
+      name: t.major.cn.name,
+      shortName: 'CN',
+      icon: Globe2,
+      color: 'from-red-500 to-orange-400',
+      description: t.major.cn.desc,
+      subjects: ['Language', 'Business', 'Translation', 'Culture'],
+    },
+    {
+      id: 'mk',
+      name: t.major.mk.name,
+      shortName: 'MK',
+      icon: TrendingUp,
+      color: 'from-green-500 to-emerald-400',
+      description: t.major.mk.desc,
+      subjects: ['Digital', 'Branding', 'Research', 'Analytics'],
+    },
+  ];
 
   const handleSelectMajor = (majorId: string) => {
     navigate(`/semesters/${majorId}`);
@@ -85,11 +126,10 @@ export default function MajorSelection() {
           transition={{ duration: 0.5 }}
         >
           <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4">
-            Chọn <span className="text-gradient">Chuyên Ngành</span>
+            {t.major.title} <span className="text-gradient">{t.major.titleHighlight}</span>
           </h1>
           <p className="text-sm sm:text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto px-4">
-            Chọn lĩnh vực học tập để truy cập tài liệu chuyên ngành và 
-            kết nối với sinh viên cùng chương trình.
+            {t.major.subtitle}
           </p>
         </motion.div>
 
@@ -150,7 +190,7 @@ export default function MajorSelection() {
                     className="w-full h-10 sm:h-11 text-sm sm:text-base group-hover:shadow-md"
                     onClick={() => handleSelectMajor(major.id)}
                   >
-                    Chọn ngành
+                    {t.major.selectButton}
                     <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                   </Button>
                 </div>
@@ -166,7 +206,7 @@ export default function MajorSelection() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
         >
-          Chưa biết chọn ngành nào? Hỏi trợ lý AI của chúng tôi để được tư vấn.
+          {t.major.helpText}
         </motion.p>
       </main>
 

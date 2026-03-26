@@ -12,11 +12,11 @@ interface ChatMessage {
   major: string | null;
 }
 
-interface UseCommunityyChatOptions {
+interface UseCommunityChatOptions {
   major?: string | null; // null = general chat, string = specific major
 }
 
-export function useCommunityChat(options: UseCommunityyChatOptions = {}) {
+export function useCommunityChat(options: UseCommunityChatOptions = {}) {
   const { major = null } = options;
   const { user } = useAuth();
   const { profile } = useProfile();
@@ -81,15 +81,37 @@ export function useCommunityChat(options: UseCommunityyChatOptions = {}) {
     if (!user) return;
 
     try {
-      await supabase
+      const { error } = await supabase
         .from('chat_messages')
         .delete()
-        .eq('id', messageId)
-        .eq('user_id', user.id);
+        .eq('id', messageId);
+      
+      if (error) {
+        console.error('Error deleting message:', error);
+        return { error: error.message };
+      }
+      return { error: null };
     } catch (error) {
       console.error('Error deleting message:', error);
+      return { error: 'Failed to delete message' };
     }
   }, [user]);
+
+  const clearAllMessages = useCallback(async () => {
+    if (!user) return;
+
+    try {
+      const { error } = await (supabase as any).rpc('clear_all_chat_messages', { _major: major });
+      if (error) {
+        console.error('Error clearing chat:', error);
+        return { error: error.message };
+      }
+      return { error: null };
+    } catch (error) {
+      console.error('Error clearing chat:', error);
+      return { error: 'Failed to clear chat' };
+    }
+  }, [user, major]);
 
   useEffect(() => {
     fetchMessages();
@@ -135,5 +157,5 @@ export function useCommunityChat(options: UseCommunityyChatOptions = {}) {
     };
   }, [major]);
 
-  return { messages, loading, sendMessage, deleteMessage, refetch: fetchMessages };
+  return { messages, loading, sendMessage, deleteMessage, clearAllMessages, refetch: fetchMessages };
 }

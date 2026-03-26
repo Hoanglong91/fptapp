@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import Navbar from '@/components/layout/Navbar';
 import FavoritesList from '@/components/profile/FavoritesList';
 import Chatbot from '@/components/Chatbot';
+import CommunityChat from '@/components/CommunityChat';
 
 export default function FavoritesPage() {
   const navigate = useNavigate();
@@ -62,6 +63,7 @@ export default function FavoritesPage() {
         </motion.div>
       </main>
 
+      <CommunityChat />
       <Chatbot />
     </div>
   );

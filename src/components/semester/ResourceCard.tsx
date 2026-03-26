@@ -1,6 +1,9 @@
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { BookOpen, FileText, Briefcase, Star, ExternalLink, Heart, Play, GraduationCap } from 'lucide-react';
+import { BookOpen, FileText, Briefcase, Star, ExternalLink, Heart, Play, GraduationCap, MessageSquare } from 'lucide-react';
 import { CourseResource } from '@/data/courseData';
+import { supabase } from '@/integrations/supabase/client';
+import { useLanguage } from '@/context/LanguageContext';
 
 interface ResourceCardProps {
   resource: CourseResource;
@@ -11,6 +14,44 @@ interface ResourceCardProps {
 }
 
 export default function ResourceCard({ resource, isBookmarked, onBookmark, onClick, index }: ResourceCardProps) {
+  const [commentCount, setCommentCount] = useState<number>(0);
+  const { t } = useLanguage();
+
+  useEffect(() => {
+    // Unique ID used in the database is often a string combination of the title/course if the ID isn't globally unique.
+    // Based on how app works, resourceId is string. Let's cast it directly.
+    const resourceIdStr = resource.id.toString();
+
+    const fetchCommentCount = async () => {
+      const { count, error } = await (supabase as any)
+        .from('discussions')
+        .select('*', { count: 'exact', head: true })
+        // Need to match exactly what is saved, wait! How was resource_id stored during addComment?
+        .eq('resource_id', resourceIdStr);
+      
+      if (!error && count !== null) {
+        setCommentCount(count);
+      }
+    };
+
+    fetchCommentCount();
+
+    // Listen to real-time changes
+    const channel = supabase.channel(`public:discussions:resource:${resourceIdStr}`)
+      .on('postgres_changes', { 
+        event: '*', 
+        schema: 'public', 
+        table: 'discussions', 
+        filter: `resource_id=eq.${resourceIdStr}` 
+      }, () => {
+        fetchCommentCount();
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [resource.id]);
   const getTypeStyles = () => {
     switch (resource.type) {
       case 'documents':
@@ -111,30 +152,33 @@ export default function ResourceCard({ resource, isBookmarked, onBookmark, onCli
       <div className="flex items-center justify-between text-xs sm:text-sm text-muted-foreground">
         <span className="truncate max-w-[55%] sm:max-w-[60%]">
           {resource.channel && `📺 ${resource.channel}`}
-          {!resource.channel && resource.type === 'documents' && '📄 Tài liệu'}
-          {!resource.channel && resource.type === 'research' && '📚 Nghiên cứu'}
-          {!resource.channel && resource.type === 'internship' && '💼 Thực tập'}
+          {!resource.channel && resource.type === 'documents' && `📄 ${t.resource.document}`}
+          {!resource.channel && resource.type === 'research' && `📚 ${t.resource.research}`}
+          {!resource.channel && resource.type === 'internship' && `💼 ${t.resource.internship}`}
         </span>
-        <div className="flex items-center gap-1.5 sm:gap-2">
-          {resource.rating && (
-            <div className="flex items-center gap-0.5 sm:gap-1 text-warning">
-              <Star className="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-current" />
-              <span className="text-[10px] sm:text-xs font-medium">{resource.rating}</span>
+        <div className="flex items-center gap-3 sm:gap-4">
+          {resource.rating ? (
+            <div className="flex items-center gap-1 sm:gap-1.5 text-warning" title="Đánh giá chất lượng">
+              <Star className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-current" />
+              <span className="text-xs sm:text-sm font-medium">{resource.rating}</span>
             </div>
-          )}
-          {resource.views && (
-            <span className="text-[10px] sm:text-xs">{resource.views}</span>
-          )}
-          {resource.citations && (
-            <span className="text-[10px] sm:text-xs hidden sm:inline">{resource.citations} citations</span>
-          )}
+          ) : null}
+          
+          <div className="flex items-center gap-1 sm:gap-1.5 opacity-80 hover:opacity-100 transition-opacity" title="Số lượt Thảo luận trong tài liệu">
+             <MessageSquare className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+             <span className="text-xs sm:text-sm font-medium">{commentCount}</span>
+          </div>
+
+          {resource.citations ? (
+            <span className="text-xs sm:text-sm hidden sm:inline opacity-70">{resource.citations} {t.resource.citations}</span>
+          ) : null}
         </div>
       </div>
 
       {/* Hover Action */}
       <div className="flex items-center gap-1.5 sm:gap-2 mt-3 sm:mt-4 pt-2.5 sm:pt-3 border-t border-border/50 text-primary font-medium text-xs sm:text-sm opacity-0 group-hover:opacity-100 transition-all duration-300">
         <ExternalLink className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-        <span>Mở tài liệu</span>
+        <span>{t.resource.openDoc}</span>
         <motion.span 
           className="ml-auto"
           animate={{ x: [0, 3, 0] }}

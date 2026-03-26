@@ -11,6 +11,7 @@ import SemesterView from "./pages/SemesterView";
 import GPAPage from "./pages/GPAPage";
 import ProfilePage from "./pages/ProfilePage";
 import FavoritesPage from "./pages/FavoritesPage";
+import LeaderboardPage from "./pages/LeaderboardPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -124,10 +125,26 @@ const AppRoutes = () => (
       }
     />
     <Route
+      path="/profile/:userId"
+      element={
+        <ProtectedRoute>
+          <ProfilePage />
+        </ProtectedRoute>
+      }
+    />
+    <Route
       path="/favorites"
       element={
         <ProtectedRoute>
           <FavoritesPage />
+        </ProtectedRoute>
+      }
+    />
+    <Route
+      path="/leaderboard"
+      element={
+        <ProtectedRoute>
+          <LeaderboardPage />
         </ProtectedRoute>
       }
     />
@@ -151,19 +168,26 @@ const AppRoutes = () => (
   </Routes>
 );
 
+import { PresenceProvider } from "./context/PresenceContext";
+import { LanguageProvider } from "./context/LanguageContext";
+
 const App = () => (
   <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <AuthProvider>
-            <AppRoutes />
-          </AuthProvider>
-        </BrowserRouter>
-      </TooltipProvider>
-    </QueryClientProvider>
+    <LanguageProvider>
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <AuthProvider>
+              <PresenceProvider>
+                <AppRoutes />
+              </PresenceProvider>
+            </AuthProvider>
+          </BrowserRouter>
+        </TooltipProvider>
+      </QueryClientProvider>
+    </LanguageProvider>
   </ThemeProvider>
 );
 

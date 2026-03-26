@@ -30,73 +30,95 @@ export function useDiscussions(resourceId: string) {
     setLoading(true);
 
     try {
-      console.log('Fetching comments for resource:', resourceId);
+      console.log('🔍 Fetching discussions with profiles...');
       
-      // Perform a clean fetch with explicit profile selection
       const { data, error } = await (supabase as any)
         .from('discussions')
         .select(`
-          id,
-          user_id,
-          resource_id,
-          content,
-          is_best_answer,
-          created_at,
-          user:profiles(display_name, avatar_url, rank)
+          *,
+          profiles:user_id (
+            display_name,
+            avatar_url,
+            rank,
+            points
+          ),
+          discussion_upvotes (
+            user_id
+          )
         `)
         .eq('resource_id', resourceId)
         .order('created_at', { ascending: false });
 
-      if (error) {
-        console.error('Supabase fetch error:', error);
-        throw error;
+      if (error) throw error;
+      if (!data) {
+        setComments([]);
+        return;
       }
 
-      console.log('Raw comments data:', data);
-
-      // Simple fetch for upvotes
-      const { data: upvoteCounts, error: upvoteError } = await (supabase as any)
-        .from('discussion_upvotes')
-        .select('discussion_id');
-      
-      if (upvoteError) console.error('Error fetching upvotes:', upvoteError);
-
-      // Check current user's upvotes
-      let myUpvoteIds: string[] = [];
-      if (user) {
-        const { data: userUpvotes } = await (supabase as any)
-          .from('discussion_upvotes')
-          .select('discussion_id')
-          .eq('user_id', user.id);
+      const formatted = data.map((item: any) => {
+        const profile = item.profiles || {};
+        const upvotes = item.discussion_upvotes || [];
+        const upCount = upvotes.length;
+        const userHasUpvoted = user ? upvotes.some((uv: any) => uv.user_id === user.id) : false;
         
-        myUpvoteIds = (userUpvotes || []).map((uv: any) => uv.discussion_id);
-      }
-
-      const formatted = (data || []).map((c: any) => {
-        // Calculate upvotes for this comment
-        const upVotes = (upvoteCounts || []).filter((uv: any) => uv.discussion_id === c.id).length;
+        // Rank & Name logic
+        const userRank = profile.rank || 'Newbie';
+        let displayName = profile.display_name;
+        
+        // FALLBACK: If this is the current user, use their Auth metadata
+        if (!displayName && user && item.user_id === user.id) {
+          displayName = user.user_metadata?.display_name || user.email?.split('@')[0];
+        }
+        
+        if (!displayName) {
+          displayName = 'Học viên FPT';
+        }
         
         return {
-          id: c.id,
-          user_id: c.user_id,
-          resource_id: c.resource_id,
-          content: c.content,
-          is_best_answer: c.is_best_answer || false,
-          created_at: c.created_at,
-          user_name: (c.user as any)?.display_name || 'FPT Student',
-          user_avatar: (c.user as any)?.avatar_url,
-          user_rank: (c.user as any)?.rank || 'Newbie',
-          upvotes_count: upVotes,
-          user_has_upvoted: myUpvoteIds.includes(c.id)
+          id: item.id,
+          user_id: item.user_id,
+          resource_id: item.resource_id,
+          content: item.content || '',
+          is_best_answer: item.is_best_answer || false,
+          created_at: item.created_at,
+          user_name: displayName,
+          user_avatar: profile.avatar_url,
+          user_rank: userRank,
+          upvotes_count: upCount,
+          user_has_upvoted: userHasUpvoted
         };
       });
 
-      console.log('Formatted comments for UI:', formatted);
+      console.log('✨ Comments loaded:', formatted);
       setComments(formatted);
     } catch (err) {
-      console.error('CRITICAL: Error in fetchComments:', err);
+      console.error('🔥 Fetch Error:', err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const deleteComment = async (commentId: string) => {
+    if (!user) return;
+    
+    try {
+      console.log('🗑️ Attempting to delete comment:', commentId);
+      const { error } = await (supabase as any)
+        .from('discussions')
+        .delete()
+        .eq('id', commentId);
+
+      if (error) throw error;
+
+      toast({ title: 'Đã xoá', description: 'Bình luận đã được xoá thành công!' });
+      await fetchComments();
+    } catch (err: any) {
+      console.error('❌ Error deleting comment:', err);
+      toast({ 
+        title: 'Lỗi', 
+        description: 'Không thể xoá bình luận. Vui lòng thử lại.', 
+        variant: 'destructive' 
+      });
     }
   };
 
@@ -107,36 +129,44 @@ export function useDiscussions(resourceId: string) {
     }
 
     try {
-      console.log('Adding comment:', content);
+      console.log('🚀 Step 1: Inserting comment for user:', user.id);
       
+      // We insert into discussions and let the database handle common defaults
       const { data, error } = await (supabase as any)
         .from('discussions')
         .insert({
-          user_id: user.id,
+          user_id: user.id, // This should match the profiles.id
           resource_id: resourceId,
-          content
+          content: content.trim()
         })
         .select();
 
       if (error) {
-        console.error('Error inserting comment:', error);
+        console.error('❌ DISCUSSIONS INSERT ERROR:', error);
         throw error;
       }
 
-      console.log('Comment inserted successfully:', data);
+      console.log('✅ Comment saved successfully!', data);
       toast({ title: 'Đã bình luận', description: 'Bình luận của bạn đã được đăng!' });
       
-      // Award points
+      // Update local state immediately for instant feedback
+      await fetchComments();
+
+      // OPTIONAL: Award points in background (doesn't block if fails)
       try {
+        console.log('💎 Step 2: Attempting to award points...');
         await addPoints('comment');
       } catch (pErr) {
-        console.error('Error awarding points:', pErr);
+        console.warn('⚠️ Points awarding failed, but comment was saved:', pErr);
       }
       
-      await fetchComments();
-    } catch (err) {
-      toast({ title: 'Lỗi', description: 'Không thể đăng bình luận.', variant: 'destructive' });
-      console.error(err);
+    } catch (err: any) {
+      console.error('🔥 CRITICAL ERROR in addComment:', err);
+      toast({ 
+        title: 'Lỗi đăng bình luận', 
+        description: err.message || 'Hệ thống đang bận, vui lòng thử lại sau.', 
+        variant: 'destructive' 
+      });
     }
   };
 
@@ -176,5 +206,12 @@ export function useDiscussions(resourceId: string) {
     }
   }, [resourceId, user]);
 
-  return { comments, loading, addComment, toggleUpvote, refresh: fetchComments };
+  return {
+    comments,
+    loading,
+    addComment,
+    deleteComment,
+    toggleUpvote,
+    refresh: fetchComments
+  };
 }
